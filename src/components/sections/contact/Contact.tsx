@@ -88,7 +88,7 @@ export function Contact() {
                   href={wa}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group mt-6 inline-flex h-12 items-center gap-3 border border-paper px-5 text-sm font-medium text-paper transition-colors hover:border-nexus-500 hover:bg-nexus-500"
+                  className="group mt-6 inline-flex h-12 items-center gap-3 border border-paper px-5 text-sm font-medium text-paper transition-[transform,background-color,border-color] duration-200 ease-[var(--ease-out-expo)] hover:border-nexus-500 hover:bg-nexus-500 active:scale-[0.97] active:duration-100"
                 >
                   <WhatsAppIcon className="h-5 w-5" />
                   Abrir chat de WhatsApp
@@ -112,7 +112,7 @@ export function Contact() {
                 <OpenStatus />
               </div>
               <p className="mt-4 font-display text-lg text-paper">{site.hours.label}</p>
-              <p className="mt-1 text-sm text-steel-300">{site.hours.range}</p>
+              <p className="mt-1 text-sm tabular-nums text-steel-300">{site.hours.range}</p>
               <p className="mt-4 text-xs text-steel-500">Hora del centro de México · {site.location}</p>
             </div>
           </Reveal>

@@ -16,7 +16,7 @@ export function Hero() {
       <div className="absolute inset-x-0 bottom-0 -z-10 h-48 bg-gradient-to-t from-ink-950 to-transparent" aria-hidden />
 
       {/* Símbolo de marca dentro de la geometría */}
-      <div className="pointer-events-none absolute right-[6%] top-[22%] -z-10 hidden h-[340px] w-[340px] lg:block" aria-hidden>
+      <div className="enter-ring pointer-events-none absolute right-[6%] top-[22%] -z-10 hidden h-[340px] w-[340px] lg:block" style={{ ["--d" as string]: "250ms" }} aria-hidden>
         <svg className="absolute inset-0 h-full w-full" viewBox="0 0 340 340" fill="none">
           <circle cx="170" cy="170" r="150" stroke="var(--color-line-strong)" />
           <circle cx="170" cy="170" r="118" stroke="var(--color-line)" strokeDasharray="2 6" />
@@ -29,24 +29,24 @@ export function Hero() {
       </div>
 
       {/* Etiqueta vertical japonesa */}
-      <div className="absolute left-5 top-1/2 hidden -translate-y-1/2 flex-col items-center gap-4 xl:flex" aria-hidden>
+      <div className="enter absolute left-5 top-1/2 hidden -translate-y-1/2 flex-col items-center gap-4 xl:flex" style={{ ["--d" as string]: "400ms" }} aria-hidden>
         <span className="h-16 w-px bg-line-strong" />
         <span className="font-jp text-sm tracking-[0.5em] text-steel-500 [writing-mode:vertical-rl]">{site.kanji}</span>
         <span className="h-16 w-px bg-line-strong" />
       </div>
 
       <Container className="flex flex-1 flex-col justify-center py-16 md:py-24">
-        <p className="mb-8 flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.28em] text-steel-300">
+        <p className="enter mb-8 flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.28em] text-steel-300" style={{ ["--d" as string]: "0ms" }}>
           <span className="h-2 w-2 bg-nexus-500" aria-hidden />
           Soluciones digitales para la industria
         </p>
 
         <TypewriterHeadline
           phrases={headlines}
-          className="max-w-4xl font-display text-[2.6rem] font-semibold leading-[1.02] tracking-[-0.03em] text-paper sm:text-6xl lg:text-[5.25rem]"
+          className="enter max-w-4xl font-display text-[2.6rem] font-semibold leading-[1.02] tracking-[-0.03em] text-paper sm:text-6xl lg:text-[5.25rem]"
         />
 
-        <p className="mt-8 max-w-2xl text-base leading-relaxed text-steel-300 sm:text-lg">
+        <p className="enter mt-8 max-w-2xl text-base leading-relaxed text-steel-300 sm:text-lg" style={{ ["--d" as string]: "220ms" }}>
           Desarrollamos soluciones digitales que impulsan empresas, conectan proveedores y transforman capacidades
           industriales en nuevas oportunidades de negocio.
         </p>

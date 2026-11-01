@@ -89,6 +89,15 @@ export function SolutionsTabs({ tabs, aliases = {}, sectionId }: SolutionsTabsPr
         onKeyDown={onKeyDown}
         className="sticky top-16 z-30 mb-12 grid grid-cols-3 border border-line bg-ink-950/90 backdrop-blur-md md:top-20 md:mb-16"
       >
+        <span
+          aria-hidden
+          data-tab-indicator
+          className="tab-indicator pointer-events-none absolute bottom-0 left-0 z-10 h-[2px] bg-nexus-500 transition-transform duration-300 ease-[var(--ease-in-out-strong)]"
+          style={{
+            width: `${100 / tabs.length}%`,
+            transform: `translateX(${tabs.findIndex((t) => t.id === active) * 100}%)`,
+          }}
+        />
         {tabs.map((t, i) => {
           const selected = t.id === active;
           return (
@@ -105,17 +114,11 @@ export function SolutionsTabs({ tabs, aliases = {}, sectionId }: SolutionsTabsPr
               aria-controls={`panel-${t.id}`}
               tabIndex={selected ? 0 : -1}
               onClick={() => setActive(t.id)}
-              className={`group relative flex min-h-14 items-center justify-center px-2 py-3 text-center transition-colors sm:px-6 ${
+              className={`group relative flex min-h-14 items-center justify-center px-2 py-3 text-center transition-[color,background-color,transform] duration-200 active:scale-[0.98] sm:px-6 ${
                 i > 0 ? "border-l border-line" : ""
               } ${selected ? "bg-ink-900 text-paper" : "text-steel-500 hover:bg-ink-900/60 hover:text-paper"}`}
             >
               <span className="font-display text-sm font-medium leading-tight sm:text-base">{t.label}</span>
-              <span
-                className={`absolute inset-x-0 bottom-0 h-[2px] origin-left bg-nexus-500 transition-transform duration-500 ease-[var(--ease-out-expo)] ${
-                  selected ? "scale-x-100" : "scale-x-0"
-                }`}
-                aria-hidden
-              />
             </button>
           );
         })}

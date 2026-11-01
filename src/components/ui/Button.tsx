@@ -3,8 +3,9 @@ import type { ComponentProps, ReactNode } from "react";
 
 type Variant = "primary" | "secondary" | "ghost";
 
+/** Presión: scale(0.97) al tocar, con soltado más lento que la presión (tiempos asimétricos). */
 const base =
-  "group inline-flex items-center justify-center gap-3 px-6 h-12 text-sm font-medium tracking-wide transition-all duration-300 ease-[var(--ease-out-expo)] disabled:opacity-50 disabled:pointer-events-none";
+  "group inline-flex items-center justify-center gap-3 px-6 h-12 text-sm font-medium tracking-wide transition-[transform,background-color,border-color,box-shadow,color] duration-200 ease-[var(--ease-out-expo)] active:scale-[0.97] active:duration-100 will-change-transform disabled:opacity-50 disabled:pointer-events-none";
 
 const variants: Record<Variant, string> = {
   primary: "bg-nexus-500 text-white hover:bg-nexus-400 shadow-[0_0_0_0_rgba(227,23,43,0)] hover:shadow-[0_8px_32px_-8px_rgba(227,23,43,0.55)]",

@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useState, type FormEvent } from "react";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/Button";
 import { serviceOptions } from "@/content/services";
 import { site, whatsappHref } from "@/content/site";
@@ -46,19 +47,24 @@ export function ContactForm() {
 
       if (res.ok && json.ok) {
         setStatus({ kind: "success" });
+        toast.success("Solicitud enviada", { description: "Te responderemos dentro de nuestro horario de atención." });
         form.reset();
       } else if (res.status === 503 || json.code === "not_configured") {
         setStatus({ kind: "unavailable" });
+        toast("El envío en línea aún no está activo", { description: "Tu solicitud no se envió. Puedes escribirnos por WhatsApp." });
       } else if (res.status === 400 && json.errors) {
         setErrors(json.errors);
         setStatus({ kind: "idle" });
       } else if (res.status === 429) {
         setStatus({ kind: "error", message: "Has enviado varias solicitudes. Intenta de nuevo en unos minutos." });
+        toast.error("Demasiados intentos", { description: "Espera unos minutos e intenta de nuevo." });
       } else {
         setStatus({ kind: "error", message: "No pudimos enviar tu solicitud. Intenta de nuevo o contáctanos directamente." });
+        toast.error("No pudimos enviar tu solicitud", { description: "Intenta de nuevo o escríbenos por WhatsApp." });
       }
     } catch {
       setStatus({ kind: "error", message: "Sin conexión. Revisa tu red e intenta de nuevo." });
+      toast.error("Sin conexión", { description: "Revisa tu red e intenta de nuevo." });
     }
   }
 

@@ -12,22 +12,15 @@ import { TAB_EVENT } from "@/components/sections/solutions/SolutionsTabs";
  * Encabezado + barra de navegación flotante.
  * - Escritorio: barra flotante centrada arriba, entre el logotipo y el botón de propuesta.
  * - Celular/tablet: barra flotante fija abajo (alcance del pulgar), con desplazamiento horizontal.
- * - Resalta el apartado visible (scrollspy) y la pestaña abierta de Soluciones.
+ * - Una píldora se desliza hasta el apartado visible (scrollspy) y la pestaña abierta.
  */
 export function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [active, setActive] = useState<string>("");
   const mobileBar = useRef<HTMLDivElement>(null);
+  const desktopBar = useRef<HTMLElement>(null);
 
-  // En celular, desplaza la barra para que el apartado activo quede visible.
-  useEffect(() => {
-    const bar = mobileBar.current;
-    const link = bar?.querySelector<HTMLElement>(`[data-nav="${active}"]`);
-    if (!bar || !link) return;
-    const left = link.offsetLeft - (bar.clientWidth - link.offsetWidth) / 2;
-    bar.scrollTo({ left, behavior: "smooth" });
-  }, [active]);
-
+  // Scrollspy: qué apartado está a la vista.
   useEffect(() => {
     let tab = "servicios";
     const vh = () => window.innerHeight * 0.4;
@@ -63,38 +56,67 @@ export function Header() {
     };
   }, []);
 
-  const links = () =>
-    navigation.map((item) => {
-      const on = active === item.href;
-      return (
-        <a
-          key={item.href}
-          href={item.href}
-          aria-current={on ? "true" : undefined}
-          data-nav={item.href}
-          className={`relative shrink-0 whitespace-nowrap px-3.5 py-2.5 text-[13px] transition-colors duration-300 ${
-            on ? "text-paper" : "text-steel-300 hover:text-paper"
-          }`}
-        >
-          {item.label}
-          <span
-            data-nav-bar
-            className={`absolute inset-x-3.5 bottom-1.5 h-px origin-left bg-nexus-500 transition-transform duration-500 ease-[var(--ease-out-expo)] ${
-              on ? "scale-x-100" : "scale-x-0"
-            }`}
-            aria-hidden
-          />
-        </a>
-      );
-    });
+  // Píldora deslizante (se mueve con transform, sin volver a renderizar) y
+  // desplazamiento de la barra móvil para que el apartado activo quede a la vista.
+  useEffect(() => {
+    const place = () => {
+      for (const bar of [desktopBar.current, mobileBar.current]) {
+        const pill = bar?.querySelector<HTMLElement>("[data-nav-pill]");
+        const link = bar?.querySelector<HTMLElement>(`[data-nav="${active}"]`);
+        if (!pill) continue;
+        if (!link) {
+          pill.style.opacity = "0";
+          continue;
+        }
+        pill.style.opacity = "1";
+        pill.style.width = `${link.offsetWidth}px`;
+        pill.style.transform = `translateX(${link.offsetLeft}px)`;
+      }
+      const mb = mobileBar.current;
+      const ml = mb?.querySelector<HTMLElement>(`[data-nav="${active}"]`);
+      if (mb && ml) mb.scrollTo({ left: ml.offsetLeft - (mb.clientWidth - ml.offsetWidth) / 2, behavior: "smooth" });
+    };
+    place();
+    window.addEventListener("resize", place);
+    return () => window.removeEventListener("resize", place);
+  }, [active]);
 
-  const bar = "border border-line-strong/80 bg-ink-900/75 shadow-[0_12px_40px_-12px_rgba(0,0,0,0.8)] backdrop-blur-xl";
+  const links = () => (
+    <>
+      <span
+        data-nav-pill
+        aria-hidden
+        className="nav-pill pointer-events-none absolute bottom-1 left-0 top-1 border border-white/10 bg-white/[0.07] opacity-0 transition-[transform,width,opacity] duration-300 ease-[var(--ease-in-out-strong)]"
+      >
+        <span className="absolute inset-x-3 -bottom-px h-px bg-nexus-500" />
+      </span>
+      {navigation.map((item) => {
+        const on = active === item.href;
+        return (
+          <a
+            key={item.href}
+            href={item.href}
+            aria-current={on ? "true" : undefined}
+            data-nav={item.href}
+            className={`relative z-10 flex min-h-11 shrink-0 items-center whitespace-nowrap px-3.5 text-[13px] transition-[color,transform] duration-200 active:scale-[0.97] ${
+              on ? "text-paper" : "text-steel-300 hover:text-paper"
+            }`}
+          >
+            {item.label}
+          </a>
+        );
+      })}
+    </>
+  );
+
+  const bar =
+    "border border-line-strong/80 bg-ink-900/75 shadow-[0_12px_40px_-12px_rgba(0,0,0,0.8)] backdrop-blur-xl";
 
   return (
     <>
       <header
         data-header
-        className={`fixed inset-x-0 top-0 z-50 transition-all duration-500 ${
+        className={`fixed inset-x-0 top-0 z-50 transition-[background-color,border-color] duration-300 ${
           scrolled ? "border-b border-line bg-ink-950/80 backdrop-blur-md" : "border-b border-transparent"
         }`}
       >
@@ -105,16 +127,29 @@ export function Header() {
           Saltar al contenido
         </a>
         <Container className="flex h-16 items-center justify-between gap-4 md:h-20">
-          <Link href="/" aria-label="MIRAI NEXUS — inicio" className="shrink-0">
+          <Link
+            href="/"
+            aria-label="MIRAI NEXUS — inicio"
+            className="enter shrink-0 transition-transform duration-200 active:scale-[0.97]"
+          >
             <Logo height={46} priority />
           </Link>
 
           {/* Barra flotante (escritorio) */}
-          <nav aria-label="Principal" className={`hidden items-center p-1 lg:flex ${bar}`}>
+          <nav
+            ref={desktopBar}
+            aria-label="Principal"
+            className={`enter relative hidden items-center p-1 lg:flex ${bar}`}
+            style={{ ["--d" as string]: "120ms" }}
+          >
             {links()}
           </nav>
 
-          <a href="#contacto" className={buttonClass("primary", "h-10 shrink-0 px-4 text-[13px] sm:px-5")}>
+          <a
+            href="#contacto"
+            className={buttonClass("primary", "enter h-10 shrink-0 px-4 text-[13px] sm:px-5")}
+            style={{ ["--d" as string]: "200ms" }}
+          >
             <span className="sm:hidden">Propuesta</span>
             <span className="hidden sm:inline">Solicita una propuesta</span>
           </a>
@@ -129,7 +164,7 @@ export function Header() {
         <div
           ref={mobileBar}
           data-mobile-bar
-          className={`mx-auto flex max-w-xl overflow-x-auto p-1 [mask-image:linear-gradient(to_right,black_85%,transparent)] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden ${bar}`}
+          className={`relative mx-auto flex max-w-xl overflow-x-auto p-1 [mask-image:linear-gradient(to_right,black_85%,transparent)] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden ${bar}`}
         >
           {links()}
         </div>

@@ -70,7 +70,7 @@ export function TypewriterHeadline({
   const dot = text.endsWith(".");
 
   return (
-    <h1 className={className} data-typewriter={JSON.stringify(phrases)}>
+    <h1 className={className} style={{ ["--d" as string]: "90ms" }} data-typewriter={JSON.stringify(phrases)}>
       <span className="sr-only">{phrases[0]}</span>
       <span className="grid" aria-hidden>
         <span className="invisible col-start-1 row-start-1">{longest}</span>

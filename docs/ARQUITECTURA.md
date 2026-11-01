@@ -104,3 +104,20 @@ mirai-nexus/
 ├─ next.config.ts        # cabeceras de seguridad (CSP, HSTS…)
 └─ .env.example
 ```
+
+## 8. Sistema de movimiento (inspirado en Emil Kowalski)
+
+Principios aplicados y dónde viven:
+
+| Principio | Implementación |
+|-----------|----------------|
+| Curva de salida fuerte para entradas e interacción | `--ease-out-expo: cubic-bezier(0.23, 1, 0.32, 1)` en `globals.css` |
+| Curva in-out fuerte para lo que se desplaza en pantalla | `--ease-in-out-strong: cubic-bezier(0.77, 0, 0.175, 1)` (píldora de navegación, indicador de pestañas) |
+| Interfaz por debajo de 300 ms | Botones 100–200 ms, píldora/indicador 300 ms; solo las entradas de marketing duran más |
+| Presión táctil | `active:scale-[0.97]` en botones y enlaces, con soltado más lento que la presión |
+| Nunca aparecer "de la nada" | Entradas desde `scale(0.95–0.98)` + `blur` + `translateY`, nunca desde `scale(0)` |
+| Orquestación | Secuencia de carga del inicio escalonada (`.enter` con `--d`) |
+| Hover solo con mouse | Tailwind v4 limita `hover:` a dispositivos con puntero |
+| Movimiento reducido | Se conserva un fundido de opacidad en lugar de quitar todo |
+| Notificaciones | **Sonner** (librería de Emil) con estilo de marca en `components/ui/Toaster.tsx` |
+| Área táctil mínima 44 px | Enlaces de la barra flotante con `min-h-11` |

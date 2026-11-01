@@ -32,7 +32,13 @@
   --font-mono: "JetBrains Mono Variable", ui-monospace, "SFMono-Regular", monospace;
   --font-jp: "Hiragino Sans", "Yu Gothic", "Noto Sans JP", "Noto Sans CJK JP", sans-serif;
 
-  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  /* Movimiento (principios de Emil Kowalski):
+     ease-out fuerte para entradas/interacción, ease-in-out fuerte para desplazamientos en pantalla. */
+  --ease-out-expo: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out-strong: cubic-bezier(0.77, 0, 0.175, 1);
+  --dur-press: 120ms;
+  --dur-ui: 220ms;
+  --dur-move: 300ms;
 }
 
 :root {
@@ -107,16 +113,60 @@ body {
 }
 
 /* Aparición al hacer scroll (controlada por <Reveal />) */
+/* Entrada con desenfoque: el elemento nunca "aparece de la nada" (no escala desde 0). */
 .reveal {
   opacity: 0;
-  transform: translateY(16px);
+  transform: translateY(12px) scale(0.98);
+  filter: blur(6px);
   transition:
-    opacity 0.8s var(--ease-out-expo),
-    transform 0.8s var(--ease-out-expo);
+    opacity 0.6s var(--ease-out-expo),
+    transform 0.6s var(--ease-out-expo),
+    filter 0.6s var(--ease-out-expo);
 }
 .reveal.is-visible {
   opacity: 1;
   transform: none;
+  filter: none;
+}
+
+/* Secuencia de carga del inicio (orquestada, una sola vez) */
+@keyframes enter {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+    filter: blur(8px);
+  }
+}
+.enter {
+  animation: enter 0.7s var(--ease-out-expo) both;
+  animation-delay: var(--d, 0ms);
+}
+@keyframes enter-ring {
+  from {
+    opacity: 0;
+    transform: scale(0.95) rotate(-8deg);
+    filter: blur(6px);
+  }
+}
+.enter-ring {
+  animation: enter-ring 1s var(--ease-out-expo) both;
+  animation-delay: var(--d, 0ms);
+}
+
+/* Cambio de panel en pestañas */
+@keyframes panel-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+    filter: blur(4px);
+  }
+}
+[role="tabpanel"]:not([hidden]) {
+  animation: panel-in var(--dur-move) var(--ease-out-expo);
+}
+
+@keyframes fade {
+  from { opacity: 0; }
 }
 
 @keyframes scan {
@@ -149,7 +199,12 @@ body {
 @media (prefers-reduced-motion: reduce) {
   .tw-caret { animation: none; }
   .float-card { animation: none; }
+  /* Movimiento reducido: se conserva un fundido suave en lugar de eliminar todo. */
+  .reveal { transform: none; filter: none; transition: opacity 0.3s ease; }
+  .reveal:not(.is-visible) { opacity: 0; }
+  .enter, .enter-ring { animation: fade 0.3s ease both; }
+  [role="tabpanel"]:not([hidden]) { animation: fade 0.2s ease; }
+  .nav-pill, .tab-indicator { transition: none !important; }
   html { scroll-behavior: auto; }
-  .reveal { opacity: 1; transform: none; transition: none; }
   .animate-scan { animation: none; }
 }
