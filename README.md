@@ -43,6 +43,23 @@ Comandos: `npm run build` · `npm run start` · `npm run lint` · `npm run typec
 
 Sin proveedor responde `503 not_configured` y el sitio avisa al visitante que su solicitud **no** se envió. Nunca se simula un envío exitoso.
 
+### Probar el formulario con correo (Resend)
+
+1. Crea una cuenta gratuita en resend.com y genera una API key (*API Keys → Create*).
+2. Crea `.env.local` en la raíz del proyecto:
+   ```bash
+   CONTACT_PROVIDER=resend
+   RESEND_API_KEY=re_xxxxxxxxx
+   CONTACT_TO_EMAIL=el-correo-con-el-que-te-registraste@gmail.com
+   CONTACT_FROM_EMAIL="MIRAI NEXUS <onboarding@resend.dev>"
+   ```
+   Sin dominio verificado, Resend solo entrega pruebas al correo de tu propia cuenta.
+3. `npm run dev`, abre http://localhost:3000/#contacto, llena el formulario y envía.
+4. Debe aparecer "Solicitud recibida." y llegarte el correo con los datos y "Responder a" apuntando al cliente.
+5. Al tener dominio (ej. mirainexus.com), verifícalo en Resend y cambia `CONTACT_FROM_EMAIL` a `contacto@mirainexus.com`.
+
+Para Vercel, agrega esas mismas variables en *Settings → Environment Variables* y vuelve a desplegar.
+
 ## Publicación (Fase 5)
 
 1. **GitHub**: crea el repositorio `mirai-nexus-web` (privado) y sube:
