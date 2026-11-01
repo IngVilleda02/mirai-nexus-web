@@ -1,0 +1,134 @@
+@import "tailwindcss";
+
+/* ─────────────────────────────────────────────────────────────
+   MIRAI NEXUS · Design tokens
+   Todos los colores y tipografías del sitio salen de aquí.
+   Tailwind v4 genera utilidades a partir de @theme
+   (ej. bg-ink-950, text-nexus-500, font-display).
+   ───────────────────────────────────────────────────────────── */
+@theme {
+  /* Negros / superficies */
+  --color-ink-950: #060709; /* fondo principal */
+  --color-ink-900: #0b0d10; /* superficie */
+  --color-ink-850: #111419; /* tarjetas */
+  --color-ink-800: #181c22; /* hover tarjetas */
+  --color-line: #23282f; /* bordes */
+  --color-line-strong: #343a43;
+
+  /* Blancos / texto */
+  --color-paper: #f3f4f6; /* texto principal */
+  --color-steel-300: #b8bec7; /* texto secundario */
+  --color-steel-500: #7d8590; /* texto terciario */
+  --color-steel-700: #4b525c;
+
+  /* Rojo Nexus (acento) */
+  --color-nexus-400: #ff3346;
+  --color-nexus-500: #e3172b; /* acento principal */
+  --color-nexus-600: #b90f20;
+  --color-nexus-900: #3a0710;
+
+  --font-display: "Sora Variable", "Sora", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Inter Variable", "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono Variable", ui-monospace, "SFMono-Regular", monospace;
+  --font-jp: "Hiragino Sans", "Yu Gothic", "Noto Sans JP", "Noto Sans CJK JP", sans-serif;
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+:root {
+  color-scheme: dark;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 5rem;
+  background: var(--color-ink-950);
+}
+
+body {
+  background: var(--color-ink-950);
+  color: var(--color-paper);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: var(--color-nexus-500);
+  color: #fff;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-nexus-500);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* Retícula técnica de fondo (plano de ingeniería) */
+.bg-grid {
+  background-image:
+    linear-gradient(to right, rgb(255 255 255 / 0.035) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(255 255 255 / 0.035) 1px, transparent 1px);
+  background-size: 64px 64px;
+}
+
+/* Esquinas tipo marco técnico para tarjetas */
+.frame-corners {
+  position: relative;
+}
+.frame-corners::before,
+.frame-corners::after {
+  content: "";
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border-color: var(--color-nexus-500);
+  opacity: 0;
+  transition: opacity 0.3s var(--ease-out-expo);
+  pointer-events: none;
+}
+.frame-corners::before {
+  top: -1px;
+  left: -1px;
+  border-top: 1px solid;
+  border-left: 1px solid;
+}
+.frame-corners::after {
+  bottom: -1px;
+  right: -1px;
+  border-bottom: 1px solid;
+  border-right: 1px solid;
+}
+.frame-corners:hover::before,
+.frame-corners:hover::after,
+.frame-corners:focus-within::before,
+.frame-corners:focus-within::after {
+  opacity: 1;
+}
+
+/* Aparición al hacer scroll (controlada por <Reveal />) */
+.reveal {
+  opacity: 0;
+  transform: translateY(16px);
+  transition:
+    opacity 0.8s var(--ease-out-expo),
+    transform 0.8s var(--ease-out-expo);
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+@keyframes scan {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(400%); }
+}
+.animate-scan {
+  animation: scan 3.2s var(--ease-out-expo) infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .reveal { opacity: 1; transform: none; transition: none; }
+  .animate-scan { animation: none; }
+}

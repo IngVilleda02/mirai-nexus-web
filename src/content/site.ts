@@ -1,0 +1,46 @@
+/**
+ * Configuración central de la marca.
+ * Edita este archivo para cambiar datos de contacto, redes y textos globales.
+ * Para reutilizar el proyecto con un cliente, este es el primer archivo a modificar.
+ */
+export const site = {
+  name: "MIRAI NEXUS",
+  shortName: "Mirai Nexus",
+  slogan: "Connecting to the Future",
+  kanji: "未来",
+  description:
+    "Desarrollo web industrial y soluciones digitales para proveedores, manufactura, automotriz y empresas de ingeniería. Catálogos digitales, páginas corporativas y automatización empresarial.",
+  url: (process.env.NEXT_PUBLIC_SITE_URL ?? "https://mirainexus.com").replace(/\/$/, ""),
+  locale: "es_MX",
+  location: "Querétaro, México",
+  // TODO: reemplazar con el correo comercial definitivo.
+  email: "contacto@mirainexus.com",
+  // Número en formato internacional sin "+" (ej. 5214421234567). Vacío = botón oculto.
+  whatsapp: process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? "",
+  whatsappMessage: "Hola, me interesa recibir una propuesta de Mirai Nexus.",
+  // TODO: reemplazar con el perfil oficial.
+  instagram: "https://www.instagram.com/mirainexus",
+  keywords: [
+    "desarrollo web industrial",
+    "páginas web para proveedores industriales",
+    "catálogos digitales empresariales",
+    "desarrollo web para empresas automotrices",
+    "soluciones digitales industriales",
+    "automatización empresarial",
+    "página web maquinados CNC",
+    "Querétaro",
+  ],
+} as const;
+
+export const navigation = [
+  { label: "Nosotros", href: "#nosotros" },
+  { label: "Servicios", href: "#servicios" },
+  { label: "Industrias", href: "#industrias" },
+  { label: "Proyectos", href: "#proyectos" },
+  { label: "Proceso", href: "#proceso" },
+] as const;
+
+export function whatsappHref(message: string = site.whatsappMessage): string | null {
+  if (!site.whatsapp) return null;
+  return `https://wa.me/${site.whatsapp}?text=${encodeURIComponent(message)}`;
+}
