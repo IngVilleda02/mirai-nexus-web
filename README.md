@@ -2,7 +2,16 @@
 
 **Connecting to the Future.** Next.js 16 · TypeScript · Tailwind CSS v4.
 
-## Arranque local
+## Abrir el sitio en tu computadora (localhost)
+
+1. Instala **Node.js LTS** desde nodejs.org (solo la primera vez).
+2. Descomprime el proyecto en una carpeta, por ejemplo `Documentos/mirai-nexus`.
+3. Doble clic en **`iniciar-local.bat`** (Windows) o **`iniciar-local.command`** (Mac).
+4. Se abre http://localhost:3000. Cada cambio que guardes en el código se ve al instante.
+
+Para ver el código: abre la carpeta con VS Code o con Claude Code en la app de escritorio.
+
+## Arranque local (terminal)
 
 ```bash
 npm install
@@ -22,7 +31,7 @@ Comandos: `npm run build` · `npm run start` · `npm run lint` · `npm run typec
 | Proyectos del portafolio | `src/content/projects.ts` + imágenes en `public/portfolio/` |
 | Pasos del proceso | `src/content/process.ts` |
 | Colores y tipografías | `src/app/globals.css` (bloque `@theme`) |
-| Logotipo | `src/components/brand/Logo.tsx` + `src/app/icon.svg` |
+| Logotipo | `public/brand/` + `src/app/icon.png` |
 | Aviso de privacidad | `src/app/aviso-de-privacidad/page.tsx` (**borrador: revisar con asesor legal**) |
 
 ## Agregar un proyecto de cliente
@@ -76,16 +85,36 @@ Sin proveedor responde `503 not_configured` y el sitio avisa al visitante que su
 
 Para Vercel, agrega esas mismas variables en *Settings → Environment Variables* y vuelve a desplegar.
 
-## Publicación (Fase 5)
+## Publicación en Vercel (plan gratuito Hobby)
 
-1. **GitHub**: crea el repositorio `mirai-nexus-web` (privado) y sube:
+> El plan Hobby es gratuito pero Vercel lo limita a uso no comercial. Sirve para revisar y presentar; para operar el sitio de la empresa a largo plazo considera Pro o Cloudflare (ver `docs/ARQUITECTURA.md`).
+
+1. **GitHub**: crea un repositorio privado `mirai-nexus-web` vacío (sin README) y, dentro de la carpeta del proyecto:
    ```bash
-   git remote add origin git@github.com:<usuario>/mirai-nexus-web.git
+   git remote add origin https://github.com/<tu-usuario>/mirai-nexus-web.git
    git push -u origin main
    ```
-2. **Vercel**: *Add New → Project → Import* el repositorio. Framework detectado: Next.js. Agrega las variables de `.env.example` en *Settings → Environment Variables*. Nota: el plan Hobby es solo para uso no comercial; para el sitio de la empresa usa Pro (ver `docs/ARQUITECTURA.md`).
-3. **Cloudflare (DNS)**: en Vercel → *Domains* agrega `mirainexus.com` y `www`. En Cloudflare crea los registros que Vercel indique (A para el apex, CNAME para `www`), con proxy **desactivado (nube gris)** para que Vercel emita el certificado. SSL/TLS en modo *Full (strict)*.
-4. Verifica en Google Search Console y envía `https://mirainexus.com/sitemap.xml`.
+2. **Vercel**: vercel.com → *Add New → Project* → importa `mirai-nexus-web`. Vercel detecta Next.js; no cambies nada de la compilación.
+3. **Variables de entorno** (*Settings → Environment Variables*, entorno *Production* y *Preview*):
+
+   | Variable | Valor |
+   | --- | --- |
+   | `NEXT_PUBLIC_SITE_URL` | `https://tu-dominio.com` (o la URL `.vercel.app` mientras no haya dominio) |
+   | `NEXT_PUBLIC_WHATSAPP_NUMBER` | `525660548768` |
+   | `CONTACT_PROVIDER` | `resend` |
+   | `CONTACT_TO_EMAIL` | el correo que recibe las solicitudes (oculto) |
+   | `CONTACT_FROM_EMAIL` | `MIRAI NEXUS <onboarding@resend.dev>` |
+   | `RESEND_API_KEY` | tu API key de Resend |
+
+4. **Deploy**. Cada `git push` a `main` vuelve a publicar solo; cada rama crea una vista previa.
+5. **Dominio con Cloudflare**: en Vercel → *Settings → Domains* agrega `tu-dominio.com` y `www`. En Cloudflare → DNS crea los registros que Vercel indique (A para el dominio, CNAME para `www`) con la nube **gris** (solo DNS). SSL/TLS en *Full (strict)*.
+6. Revisa: formulario (llega el correo), WhatsApp, `https://tu-dominio.com/sitemap.xml` y la imagen al pegar el enlace en WhatsApp.
+
+Antes de cada publicación puedes correr `npm run check` (tipos + lint + build).
+
+## Plantilla para sitios de clientes
+
+El prompt maestro y la ficha del cliente están en el documento **"Prompt maestro — Sitios web de clientes MIRAI NEXUS"** de tu cuenta de Claude (se exporta a Word, PDF o Markdown).
 
 ## Arquitectura
 
