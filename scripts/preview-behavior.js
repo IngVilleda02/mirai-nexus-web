@@ -41,6 +41,31 @@
     });
   }
 
+  /* Título con efecto máquina de escribir (misma lógica que TypewriterHeadline.tsx) */
+  var tw = document.querySelector("[data-typewriter]");
+  if (tw) {
+    var phrases = JSON.parse(tw.getAttribute("data-typewriter"));
+    var tEl = tw.querySelector("[data-tw-text]"), dEl = tw.querySelector("[data-tw-dot]");
+    var idx = 0, txt = phrases[0];
+    function render() {
+      var dot = txt.slice(-1) === ".";
+      tEl.textContent = dot ? txt.slice(0, -1) : txt;
+      dEl.classList.toggle("hidden", !dot);
+    }
+    function hold() { setTimeout(del, 2800); }
+    function del() {
+      if (!txt.length) { idx = (idx + 1) % phrases.length; return setTimeout(type, 200); }
+      txt = txt.slice(0, -1); render(); setTimeout(del, 28);
+    }
+    function type() {
+      var cur = phrases[idx];
+      if (txt === cur) return hold();
+      txt = cur.slice(0, txt.length + 1); render(); setTimeout(type, 55);
+    }
+    if (reduced) setInterval(function () { idx = (idx + 1) % phrases.length; txt = phrases[idx]; render(); }, 4300);
+    else hold();
+  }
+
   /* Red de nodos del hero */
   var canvas = document.querySelector("#inicio canvas");
   if (canvas && canvas.getContext) {

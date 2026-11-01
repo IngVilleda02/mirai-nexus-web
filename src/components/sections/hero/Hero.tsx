@@ -1,10 +1,22 @@
 import { Container } from "@/components/ui/Container";
 import { ButtonLink } from "@/components/ui/Button";
 import { NetworkCanvas } from "./NetworkCanvas";
+import { TypewriterHeadline } from "./TypewriterHeadline";
 import { site } from "@/content/site";
 import { LogoMark } from "@/components/brand/Logo";
 
-const sectors = ["Automotriz", "Maquinados CNC", "Soldadura", "Automatización", "Mantenimiento", "Proveedores"];
+const sectors = [
+  "Automotriz",
+  "Maquinados CNC",
+  "Soldadura",
+  "Automatización",
+  "Mantenimiento",
+  "Proveedores",
+  "Negocios en crecimiento",
+];
+
+/** Frases del título principal (efecto máquina de escribir, en ciclo). */
+const headlines = ["Conectamos la industria con el futuro.", "Conectamos tu empresa con la industria."];
 
 export function Hero() {
   return (
@@ -40,9 +52,10 @@ export function Hero() {
           Soluciones digitales para la industria
         </p>
 
-        <h1 className="max-w-4xl font-display text-[2.6rem] font-semibold leading-[1.02] tracking-[-0.03em] text-balance text-paper sm:text-6xl lg:text-[5.25rem]">
-          Conectamos la industria con el futuro<span className="text-nexus-500">.</span>
-        </h1>
+        <TypewriterHeadline
+          phrases={headlines}
+          className="max-w-4xl font-display text-[2.6rem] font-semibold leading-[1.02] tracking-[-0.03em] text-paper sm:text-6xl lg:text-[5.25rem]"
+        />
 
         <p className="mt-8 max-w-2xl text-base leading-relaxed text-steel-300 sm:text-lg">
           Desarrollamos soluciones digitales que impulsan empresas, conectan proveedores y transforman capacidades

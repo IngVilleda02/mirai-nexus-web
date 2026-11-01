@@ -127,7 +127,18 @@ body {
   animation: scan 3.2s var(--ease-out-expo) infinite;
 }
 
+/* Cursor de la máquina de escribir */
+@keyframes caret-blink {
+  0%, 45% { opacity: 1; }
+  50%, 95% { opacity: 0; }
+  100% { opacity: 1; }
+}
+.tw-caret {
+  animation: caret-blink 1s steps(1) infinite;
+}
+
 @media (prefers-reduced-motion: reduce) {
+  .tw-caret { animation: none; }
   html { scroll-behavior: auto; }
   .reveal { opacity: 1; transform: none; transition: none; }
   .animate-scan { animation: none; }
