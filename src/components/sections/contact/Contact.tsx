@@ -13,7 +13,7 @@ export function Contact() {
       <Container className="grid gap-14 lg:grid-cols-12 lg:gap-16">
         <Reveal className="lg:col-span-5">
           <p className="mb-5 flex items-center gap-3 font-mono text-xs uppercase tracking-[0.25em] text-steel-500">
-            <span className="text-nexus-500">06</span>
+            <span className="text-nexus-500">03</span>
             <span className="h-px w-8 bg-line-strong" aria-hidden />
             Contacto
           </p>

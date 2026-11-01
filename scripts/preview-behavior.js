@@ -66,6 +66,42 @@
     else hold();
   }
 
+  /* Pestañas de Soluciones (misma lógica que SolutionsTabs.tsx) */
+  var tabs = Array.prototype.slice.call(document.querySelectorAll("[data-tab]"));
+  if (tabs.length) {
+    var aliases = { industrias: "servicios" };
+    function activate(id, focus) {
+      tabs.forEach(function (b) {
+        var on = b.getAttribute("data-tab") === id;
+        b.setAttribute("aria-selected", String(on)); b.tabIndex = on ? 0 : -1;
+        ["bg-ink-900", "text-paper"].forEach(function (c) { b.classList.toggle(c, on); });
+        ["text-steel-500"].forEach(function (c) { b.classList.toggle(c, !on); });
+        var idx = b.querySelector(".font-mono"); idx.classList.toggle("text-nexus-500", on); idx.classList.toggle("text-steel-700", !on);
+        var bar = b.lastElementChild; bar.classList.toggle("scale-x-100", on); bar.classList.toggle("scale-x-0", !on);
+        if (on && focus) b.focus();
+      });
+      document.querySelectorAll("[data-panel]").forEach(function (p) { p.hidden = p.getAttribute("data-panel") !== id; });
+    }
+    tabs.forEach(function (b, i) {
+      b.addEventListener("click", function () { activate(b.getAttribute("data-tab")); });
+      b.addEventListener("keydown", function (e) {
+        var n = { ArrowRight: (i + 1) % tabs.length, ArrowLeft: (i - 1 + tabs.length) % tabs.length, Home: 0, End: tabs.length - 1 }[e.key];
+        if (n === undefined) return; e.preventDefault(); activate(tabs[n].getAttribute("data-tab"), true);
+      });
+    });
+    document.addEventListener("click", function (e) {
+      var a = e.target.closest && e.target.closest('a[href^="#"]'); if (!a) return;
+      var key = a.getAttribute("href").slice(1);
+      var tabId = tabs.some(function (b) { return b.getAttribute("data-tab") === key; }) ? key : aliases[key];
+      if (!tabId) return;
+      e.preventDefault(); activate(tabId);
+      requestAnimationFrame(function () {
+        var t = document.getElementById(key === tabId ? "soluciones" : key);
+        if (t) t.scrollIntoView({ behavior: reduced ? "auto" : "smooth", block: "start" });
+      });
+    });
+  }
+
   /* Red de nodos del hero */
   var canvas = document.querySelector("#inicio canvas");
   if (canvas && canvas.getContext) {

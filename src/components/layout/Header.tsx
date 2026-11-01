@@ -39,7 +39,7 @@ export function Header() {
           <Logo height={46} priority />
         </Link>
 
-        <nav aria-label="Principal" className="hidden items-center gap-9 lg:flex">
+        <nav aria-label="Principal" className="hidden items-center gap-7 xl:gap-9 lg:flex">
           {navigation.map((item) => (
             <a
               key={item.href}

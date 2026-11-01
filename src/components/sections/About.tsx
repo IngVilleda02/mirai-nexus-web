@@ -45,7 +45,12 @@ export function About() {
 
           <ul className="grid gap-px self-start border border-line bg-line lg:col-span-6">
             {pillars.map((p, i) => (
-              <Reveal as="li" key={p.k} delay={i * 90} className="group flex gap-6 bg-ink-950 p-6 transition-colors hover:bg-ink-900 sm:p-8">
+              <Reveal
+                as="li"
+                key={p.k}
+                delay={i * 90}
+                className="group flex gap-6 bg-ink-950 p-6 transition-colors hover:bg-ink-900 sm:p-8"
+              >
                 <span className="font-mono text-xs text-nexus-500">0{i + 1}</span>
                 <div>
                   <h3 className="font-display text-lg font-medium text-paper">{p.k}</h3>

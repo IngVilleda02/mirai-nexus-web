@@ -3,10 +3,7 @@ import { Footer } from "@/components/layout/Footer";
 import { WhatsAppFloat } from "@/components/layout/WhatsAppFloat";
 import { Hero } from "@/components/sections/hero/Hero";
 import { About } from "@/components/sections/About";
-import { Services } from "@/components/sections/Services";
-import { Industries } from "@/components/sections/Industries";
-import { Portfolio } from "@/components/sections/Portfolio";
-import { Process } from "@/components/sections/Process";
+import { Solutions } from "@/components/sections/solutions/Solutions";
 import { Contact } from "@/components/sections/contact/Contact";
 import { organizationJsonLd } from "@/lib/seo";
 
@@ -21,10 +18,7 @@ export default function HomePage() {
       <main id="contenido">
         <Hero />
         <About />
-        <Services />
-        <Industries />
-        <Portfolio />
-        <Process />
+        <Solutions />
         <Contact />
       </main>
       <Footer />

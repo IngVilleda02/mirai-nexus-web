@@ -37,7 +37,8 @@ export const navigation = [
   { label: "Servicios", href: "#servicios" },
   { label: "Industrias", href: "#industrias" },
   { label: "Proyectos", href: "#proyectos" },
-  { label: "Proceso", href: "#proceso" },
+  { label: "Cómo trabajamos", href: "#proceso" },
+  { label: "Contacto", href: "#contacto" },
 ] as const;
 
 export function whatsappHref(message: string = site.whatsappMessage): string | null {
