@@ -25,14 +25,30 @@ Comandos: `npm run build` · `npm run start` · `npm run lint` · `npm run typec
 | Logotipo | `src/components/brand/Logo.tsx` + `src/app/icon.svg` |
 | Aviso de privacidad | `src/app/aviso-de-privacidad/page.tsx` (**borrador: revisar con asesor legal**) |
 
+## Agregar un proyecto de cliente
+
+En `src/content/projects.ts`, dentro de `clientSites`, pega la dirección del sitio:
+
+```ts
+export const clientSites: ClientSite[] = [
+  { url: "https://www.cliente.com", industry: "Maquinados CNC" },
+];
+```
+
+La tarjeta se arma sola con el título, la descripción, la imagen de vista previa (Open Graph)
+y el ícono del sitio del cliente, dentro del marco de navegador de la plantilla. Si el sitio no
+tiene imagen de vista previa se muestra su ícono y dominio. La información se actualiza cada 24 h.
+Opcional: `title`, `description` o `image` para reemplazar lo que se obtuvo del sitio.
+Cuando tengas clientes suficientes, pon `showDemoProjects = false` para ocultar las demostraciones.
+
 ## Pendientes antes de publicar
 
-- [ ] Logotipo oficial en `public/brand/` y reemplazo de `LogoMark` y `icon.svg`.
-- [ ] Correo comercial y perfil de Instagram reales en `site.ts`.
-- [ ] `NEXT_PUBLIC_WHATSAPP_NUMBER` (sin él, el botón de WhatsApp no aparece).
-- [ ] Proveedor del formulario (`CONTACT_PROVIDER` = `webhook` o `resend`).
-- [ ] Completar y validar el aviso de privacidad.
-- [ ] Dominio definitivo en `NEXT_PUBLIC_SITE_URL`.
+- [x] Logotipo oficial, WhatsApp e Instagram.
+- [ ] API key de Resend en `RESEND_API_KEY` (el correo que recibe ya está configurado y oculto).
+- [ ] Dominio definitivo en `NEXT_PUBLIC_SITE_URL` (metadatos, sitemap y Open Graph).
+- [ ] Completar y revisar con un asesor legal el aviso de privacidad (`[razón social]`, `[domicilio]`, `[fecha]`, correo de contacto ARCO).
+- [ ] Confirmar los textos de las tarjetas de beneficios (`src/content/contact.ts`).
+- [ ] Dar de alta el sitio en Google Search Console y Google Business Profile.
 
 ## Formulario de contacto
 

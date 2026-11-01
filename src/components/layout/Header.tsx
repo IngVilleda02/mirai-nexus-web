@@ -14,7 +14,12 @@ import { TAB_EVENT } from "@/components/sections/solutions/SolutionsTabs";
  * - Celular/tablet: barra flotante fija abajo (alcance del pulgar), con desplazamiento horizontal.
  * - Una píldora se desliza hasta el apartado visible (scrollspy) y la pestaña abierta.
  */
-export function Header() {
+interface HeaderProps {
+  /** Prefijo de los enlaces. En páginas distintas al inicio usa "/" para volver a las secciones. */
+  linkBase?: string;
+}
+
+export function Header({ linkBase = "" }: HeaderProps) {
   const [scrolled, setScrolled] = useState(false);
   const [active, setActive] = useState<string>("");
   const mobileBar = useRef<HTMLDivElement>(null);
@@ -95,7 +100,7 @@ export function Header() {
         return (
           <a
             key={item.href}
-            href={item.href}
+            href={`${linkBase}${item.href}`}
             aria-current={on ? "true" : undefined}
             data-nav={item.href}
             className={`relative z-10 flex min-h-11 shrink-0 items-center whitespace-nowrap px-3.5 text-[13px] transition-[color,transform] duration-200 active:scale-[0.97] ${
@@ -146,7 +151,7 @@ export function Header() {
           </nav>
 
           <a
-            href="#contacto"
+            href={`${linkBase}#contacto`}
             className={buttonClass("primary", "enter h-10 shrink-0 px-4 text-[13px] sm:px-5")}
             style={{ ["--d" as string]: "200ms" }}
           >

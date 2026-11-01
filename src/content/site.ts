@@ -9,7 +9,7 @@ export const site = {
   slogan: "Connecting to the Future",
   kanji: "未来",
   description:
-    "Desarrollo web industrial y soluciones digitales para proveedores, manufactura, automotriz y empresas de ingeniería. Catálogos digitales, páginas corporativas y automatización empresarial.",
+    "Desarrollo web industrial y soluciones digitales para proveedores, manufactura, automotriz y empresas de ingeniería. Páginas corporativas, catálogos digitales y solicitudes de cotización para empresas industriales.",
   url: (process.env.NEXT_PUBLIC_SITE_URL ?? "https://mirainexus.com").replace(/\/$/, ""),
   locale: "es_MX",
   location: "Querétaro, México",

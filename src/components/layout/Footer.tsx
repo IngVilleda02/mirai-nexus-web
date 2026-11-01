@@ -4,7 +4,7 @@ import { Container } from "@/components/ui/Container";
 import { services } from "@/content/services";
 import { site, whatsappHref } from "@/content/site";
 
-export function Footer() {
+export function Footer({ linkBase = "" }: { linkBase?: string }) {
   const year = new Date().getFullYear();
   const wa = whatsappHref();
   const heading = "mb-5 font-mono text-[10px] uppercase tracking-[0.25em] text-steel-500";
@@ -25,7 +25,7 @@ export function Footer() {
           <ul className="space-y-3">
             {services.map((s) => (
               <li key={s.id}>
-                <a href="#servicios" className={link}>{s.title}</a>
+                <a href={`${linkBase}#servicios`} className={link}>{s.title}</a>
               </li>
             ))}
           </ul>
@@ -37,7 +37,7 @@ export function Footer() {
             {site.email && <li><a href={`mailto:${site.email}`} className={link}>{site.email}</a></li>}
             {wa && <li><a href={wa} target="_blank" rel="noopener noreferrer" className={link}>WhatsApp</a></li>}
             <li><a href={site.instagram} target="_blank" rel="noopener noreferrer" className={link}>Instagram</a></li>
-            <li><a href="#contacto" className={link}>Solicita una propuesta</a></li>
+            <li><a href={`${linkBase}#contacto`} className={link}>Solicita una propuesta</a></li>
             <li className="pt-2 text-xs leading-relaxed text-steel-500">
               {site.hours.label}
               <br />

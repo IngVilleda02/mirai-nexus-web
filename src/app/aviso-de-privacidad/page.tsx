@@ -20,7 +20,7 @@ export default function PrivacyPage() {
   const h2 = "mt-12 font-display text-xl font-medium text-paper";
   return (
     <>
-      <Header />
+      <Header linkBase="/" />
       <main id="contenido" className="pb-24 pt-32 md:pt-40">
         <Container className="max-w-3xl">
           <p className="font-mono text-xs uppercase tracking-[0.25em] text-nexus-500">Legal</p>
@@ -73,7 +73,7 @@ export default function PrivacyPage() {
           <Link href="/" className="mt-14 inline-block text-sm text-steel-300 hover:text-paper">← Volver al inicio</Link>
         </Container>
       </main>
-      <Footer />
+      <Footer linkBase="/" />
     </>
   );
 }

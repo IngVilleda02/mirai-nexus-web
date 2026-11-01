@@ -1,5 +1,32 @@
 /**
- * Portafolio.
+ * ───────────────────────── PROYECTOS DE CLIENTES ─────────────────────────
+ * Para agregar un cliente, solo pega la dirección de su página:
+ *
+ *   { url: "https://www.cliente.com" },
+ *
+ * La tarjeta se arma sola con el título, la descripción y la imagen de vista
+ * previa del sitio del cliente. Campos opcionales si quieres ajustar algo:
+ *   industry: "Maquinados CNC"        → etiqueta roja de la tarjeta
+ *   title / description / image       → reemplazan lo que se obtuvo del sitio
+ * Agrega clientes solo con su autorización.
+ */
+export interface ClientSite {
+  url: string;
+  industry?: string;
+  title?: string;
+  description?: string;
+  image?: string;
+}
+
+export const clientSites: ClientSite[] = [
+  // { url: "https://www.cliente-ejemplo.com", industry: "Maquinados CNC" },
+];
+
+/** Mostrar los proyectos demostrativos. Ponlo en false cuando tengas clientes suficientes. */
+export const showDemoProjects = true;
+
+/**
+ * ───────────────────────── PROYECTOS DEMOSTRATIVOS ─────────────────────────
  * kind:
  *  - "demo":   proyecto conceptual desarrollado por Mirai Nexus (NO es cliente real).
  *  - "client": proyecto publicado para un cliente real (agregar solo con autorización).
