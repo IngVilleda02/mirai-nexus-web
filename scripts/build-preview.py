@@ -41,13 +41,15 @@ def inline_img(m):
         return f'src="data:{mime};base64,{base64.b64encode(p.read_bytes()).decode()}"'
     return m.group(0)
 
-body = re.sub(r'src="(/(?:portfolio|brand)/[^"]+)"', inline_img, body)
+body = re.sub(r'src="(/(?:portfolio|brand|inline)/[^"]+)"', inline_img, body)
 body = re.sub(r'\s(srcset|imagesrcset)="[^"]*"', "", body)
 # Enlaces internos que no existen en la vista previa
 body = body.replace('href="/aviso-de-privacidad"', 'href="#contacto"').replace('href="/"', 'href="#inicio"')
 
 body = body.replace('>Horario de atención</span>', '>Horario de atención</span><span id="pv-open-status"></span>', 1)
 js = (root / "scripts/preview-behavior.js").read_text()
+# Componente Intertext (MIT) para las imágenes en línea de los títulos
+pill_js = (root / "node_modules/intertext-dev/dist/lib/artifact-pill.js").read_text().replace("</script", "<\\/script")
 
 out = f"""<title>MIRAI NEXUS</title>
 <meta name="description" content="Vista previa del sitio oficial de MIRAI NEXUS.">
@@ -58,6 +60,9 @@ html, body {{ background: #060709; color: #f3f4f6; }}
 body {{ overflow-x: clip; }}
 </style>
 <div class="min-h-screen">{body}</div>
+<script type="module">
+{pill_js}
+</script>
 <script>
 {js}
 </script>

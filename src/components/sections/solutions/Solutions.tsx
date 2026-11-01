@@ -1,3 +1,4 @@
+import { InlineMedia } from "@/components/ui/InlineMedia";
 import { Container } from "@/components/ui/Container";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { ServicesPanel } from "@/components/sections/Services";
@@ -18,7 +19,23 @@ export function Solutions() {
           label="Soluciones"
           title={
             <>
-              Explora cómo podemos ayudarte<span className="text-nexus-500">.</span>
+              Explora{" "}
+              <InlineMedia
+                src="/inline/demo-maquinados.webp"
+                alt="Vista previa de un proyecto demostrativo: catálogo de capacidades CNC"
+                width="2.2em"
+                height=".78em"
+                expand={{ width: "5.6em", height: "3.5em" }}
+              />{" "}
+              cómo podemos{" "}
+              <InlineMedia
+                src="/inline/demo-proveedor.webp"
+                alt="Vista previa de un proyecto demostrativo: portal de proveedor industrial"
+                width="1.6em"
+                height=".78em"
+                expand={{ width: "5.6em", height: "3.5em" }}
+              />{" "}
+              ayudarte<span className="text-nexus-500">.</span>
             </>
           }
           intro="Conoce nuestros servicios, los proyectos que hemos desarrollado y la forma en que trabajamos contigo."

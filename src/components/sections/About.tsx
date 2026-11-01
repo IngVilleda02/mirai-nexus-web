@@ -1,3 +1,4 @@
+import { InlineMedia } from "@/components/ui/InlineMedia";
 import { Container } from "@/components/ui/Container";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { Reveal } from "@/components/ui/Reveal";
@@ -16,7 +17,9 @@ export function About() {
           label="Quiénes somos"
           title={
             <>
-              Tecnología con criterio de ingeniería<span className="text-nexus-500">.</span>
+              Tecnología{" "}
+              <InlineMedia src="/brand/logo-mark.webp" alt="" width="1.05em" height=".9em" fit="fit" />{" "}
+              con criterio de ingeniería<span className="text-nexus-500">.</span>
             </>
           }
           intro="Mirai Nexus es una empresa de soluciones tecnológicas que ayuda a empresas a mejorar su presencia digital y aprovechar nuevas oportunidades comerciales."

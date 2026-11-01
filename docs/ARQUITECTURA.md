@@ -121,3 +121,21 @@ Principios aplicados y dónde viven:
 | Movimiento reducido | Se conserva un fundido de opacidad en lugar de quitar todo |
 | Notificaciones | **Sonner** (librería de Emil) con estilo de marca en `components/ui/Toaster.tsx` |
 | Área táctil mínima 44 px | Enlaces de la barra flotante con `min-h-11` |
+
+## 9. Refinamiento visual con skills (1 nov 2026)
+
+**popular-web-designs** — se tomaron patrones (no marcas) de guías con estética industrial y oscura:
+
+| Referencia | Patrón aplicado | Dónde |
+|------------|-----------------|-------|
+| Linear | Superficies por escalones de luz; bordes blancos casi transparentes (`rgb(255 255 255 / .075)`) | `@theme` en `globals.css` |
+| Linear | Inter con `cv01`, `cv11`, `ss03`; botón secundario fantasma translúcido | `body`, `Button.tsx` |
+| Vercel | Brillo interior de 1 px + sombra mínima (`.surface`) | Tarjetas de beneficios, WhatsApp, horario, formulario |
+| Vercel / Linear | Tracking negativo en títulos (−0.035 a −0.04 em) | `SectionHeader`, `Hero`, `PanelHeader` |
+| BMW | Esquinas rectas, rojo solo para acciones, contraste de pesos | Todo el sitio |
+| SpaceX | Etiquetas técnicas en mayúsculas con tracking positivo (`.label-tech`) | Etiquetas de sección |
+
+**intertext** — imágenes en línea dentro de los títulos (`intertext-dev@0.1.1`, MIT), componente `components/ui/InlineMedia.tsx`:
+- "Tecnología [símbolo] con criterio de ingeniería." y "Solicita una [símbolo] propuesta." — símbolo de marca decorativo.
+- "Explora [demo CNC] cómo podemos [demo proveedor] ayudarte." — se agrandan al pasar el mouse, tocar o con Enter y muestran los proyectos demostrativos.
+- Imágenes en `public/inline/`. Para usar fotos de clientes reales, reemplaza esos archivos o cambia `src`.

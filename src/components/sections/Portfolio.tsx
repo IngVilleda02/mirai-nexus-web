@@ -73,7 +73,7 @@ export function PortfolioPanel() {
 
                 <div className="p-7 sm:p-9">
                   <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-nexus-500">{p.industry}</p>
-                  <h4 className="mt-3 font-display text-2xl font-medium tracking-tight text-paper">{p.name}</h4>
+                  <h4 className="mt-3 font-display text-2xl font-medium tracking-[-0.025em] text-paper">{p.name}</h4>
                   <p className="mt-3 text-sm leading-relaxed text-steel-300">{p.description}</p>
 
                   <ul className="mt-6 flex flex-wrap gap-2" aria-label="Servicios implementados">

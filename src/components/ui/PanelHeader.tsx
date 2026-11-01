@@ -4,7 +4,7 @@ import type { ReactNode } from "react";
 export function PanelHeader({ title, intro }: { title: string; intro?: ReactNode }) {
   return (
     <div className="mb-10 grid gap-4 md:mb-14 lg:grid-cols-12 lg:items-end">
-      <h3 className="font-display text-2xl font-semibold leading-tight tracking-tight text-balance text-paper sm:text-3xl lg:col-span-7">
+      <h3 className="font-display text-2xl font-semibold leading-tight tracking-[-0.03em] text-balance text-paper sm:text-3xl lg:col-span-7">
         {title}
         <span className="text-nexus-500">.</span>
       </h3>

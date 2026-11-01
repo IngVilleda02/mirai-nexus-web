@@ -66,7 +66,7 @@ export async function ClientPreviewCard({ site }: { site: ClientSite }) {
             Cliente
           </span>
         </div>
-        <h4 className="mt-3 line-clamp-2 font-display text-2xl font-medium tracking-tight text-paper">{title}</h4>
+        <h4 className="mt-3 line-clamp-2 font-display text-2xl font-medium tracking-[-0.025em] text-paper">{title}</h4>
         {description && <p className="mt-3 line-clamp-3 text-sm leading-relaxed text-steel-300">{description}</p>}
         <span className="mt-8 flex items-center gap-2 border-t border-line pt-6 text-sm text-paper transition-colors group-hover:text-nexus-400">
           Visitar sitio

@@ -7,13 +7,15 @@
    (ej. bg-ink-950, text-nexus-500, font-display).
    ───────────────────────────────────────────────────────────── */
 @theme {
-  /* Negros / superficies */
+  /* Negros / superficies — modelo de luminosidad (ref. Linear):
+     más profundo = más oscuro; lo elevado sube un escalón de luz, sin sombras pesadas. */
   --color-ink-950: #060709; /* fondo principal */
-  --color-ink-900: #0b0d10; /* superficie */
-  --color-ink-850: #111419; /* tarjetas */
-  --color-ink-800: #181c22; /* hover tarjetas */
-  --color-line: #23282f; /* bordes */
-  --color-line-strong: #343a43;
+  --color-ink-900: #0c0e11; /* superficie */
+  --color-ink-850: #12151a; /* tarjetas */
+  --color-ink-800: #191c22; /* hover tarjetas */
+  /* Bordes: blanco casi transparente en lugar de gris opaco (ref. Linear / Vercel) */
+  --color-line: rgb(255 255 255 / 0.075);
+  --color-line-strong: rgb(255 255 255 / 0.13);
 
   /* Blancos / texto */
   --color-paper: #f3f4f6; /* texto principal */
@@ -55,6 +57,8 @@ body {
   background: var(--color-ink-950);
   color: var(--color-paper);
   font-family: var(--font-sans);
+  /* Inter con alternativas geométricas (ref. Linear): "a" de un piso y 1 sin pie */
+  font-feature-settings: "cv01", "cv11", "ss03";
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
@@ -68,6 +72,42 @@ body {
   outline: 2px solid var(--color-nexus-500);
   outline-offset: 3px;
   border-radius: 2px;
+}
+
+/* Títulos: tracking negativo y ajuste óptico (ref. Vercel / Linear) */
+h1, h2, h3, .font-display {
+  font-feature-settings: "ss01";
+  text-wrap: balance;
+}
+
+/* Superficie elevada: brillo interior de 1px + sombra mínima (ref. Vercel).
+   Da profundidad sin romper la estética plana e industrial. */
+.surface {
+  background: var(--color-ink-900);
+  box-shadow:
+    inset 0 1px 0 0 rgb(255 255 255 / 0.05),
+    0 0 0 1px var(--color-line),
+    0 24px 48px -32px rgb(0 0 0 / 0.9);
+}
+
+/* Etiqueta técnica en mayúsculas con tracking positivo (ref. SpaceX / BMW) */
+.label-tech {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  color: var(--color-steel-500);
+}
+
+/* Intertext: imágenes en línea dentro de los títulos */
+artifact-pill {
+  --artifact-background: var(--color-ink-850);
+  --artifact-focus: var(--color-nexus-500);
+  --artifact-radius: 0px;
+  --artifact-easing: var(--ease-out-expo);
+  --artifact-duration: 450ms;
+  vertical-align: -0.08em;
+  box-shadow: 0 0 0 1px var(--color-line-strong);
 }
 
 /* Retícula técnica de fondo (plano de ingeniería) */

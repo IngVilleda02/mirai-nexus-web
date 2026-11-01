@@ -1,3 +1,4 @@
+import { InlineMedia } from "@/components/ui/InlineMedia";
 import { Container } from "@/components/ui/Container";
 import { Reveal } from "@/components/ui/Reveal";
 import { WhatsAppIcon } from "@/components/ui/WhatsAppIcon";
@@ -41,12 +42,14 @@ export function Contact() {
       <Container>
         {/* Encabezado */}
         <Reveal className="mb-12 max-w-2xl md:mb-16">
-          <p className="mb-5 flex items-center gap-3 font-mono text-xs uppercase tracking-[0.25em] text-steel-500">
+          <p className="label-tech mb-5 flex items-center gap-3">
             <span className="h-px w-8 bg-nexus-500" aria-hidden />
             Contacto
           </p>
-          <h2 className="font-display text-4xl font-semibold leading-[1.05] tracking-tight text-balance text-paper sm:text-5xl">
-            Solicita una propuesta<span className="text-nexus-500">.</span>
+          <h2 className="font-display text-4xl font-semibold leading-[1.05] tracking-[-0.035em] text-balance text-paper sm:text-5xl">
+            Solicita una{" "}
+            <InlineMedia src="/brand/logo-mark.webp" alt="" width="1.05em" height=".9em" fit="fit" />{" "}
+            propuesta<span className="text-nexus-500">.</span>
           </h2>
           <p className="mt-6 max-w-md text-base leading-relaxed text-steel-300">
             Cuéntanos sobre tu empresa y lo que necesitas. Preparamos una propuesta a la medida de tu operación.
@@ -58,7 +61,7 @@ export function Contact() {
           {benefits.map((b, i) => (
             <li
               key={b.title}
-              className="float-card group border border-line-strong/80 bg-ink-900/80 p-6 shadow-[0_24px_60px_-24px_rgba(0,0,0,0.9)] backdrop-blur-sm transition-colors duration-500 hover:border-nexus-500/60"
+              className="float-card surface group p-6 transition-[box-shadow] duration-300 hover:shadow-[inset_0_1px_0_0_rgb(255_255_255/0.06),0_0_0_1px_rgb(227_23_43/0.45),0_24px_48px_-32px_rgb(0_0_0/0.9)]"
               style={{ animationDelay: `${i * -2}s` }}
             >
               <div className="flex items-center gap-4">
@@ -76,7 +79,7 @@ export function Contact() {
           {/* Canales alternos */}
           <Reveal className="flex flex-col gap-4 lg:col-span-5">
             {/* WhatsApp */}
-            <div className="relative overflow-hidden border border-line bg-ink-950 p-6 sm:p-8">
+            <div className="surface relative overflow-hidden p-6 sm:p-8">
               <span className="absolute right-0 top-0 h-16 w-16 bg-[radial-gradient(circle_at_top_right,rgba(227,23,43,0.25),transparent_70%)]" aria-hidden />
               <WhatsAppIcon className="h-8 w-8 text-paper" />
               <h3 className="mt-6 font-display text-xl font-medium text-paper">¿Prefieres contactarnos por WhatsApp?</h3>
@@ -106,7 +109,7 @@ export function Contact() {
             </div>
 
             {/* Horario */}
-            <div className="border border-line bg-ink-950 p-6 sm:p-8">
+            <div className="surface p-6 sm:p-8">
               <div className="flex flex-wrap items-center justify-between gap-3">
                 <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-steel-500">Horario de atención</span>
                 <OpenStatus />

@@ -43,7 +43,7 @@ export function Hero() {
 
         <TypewriterHeadline
           phrases={headlines}
-          className="enter max-w-4xl font-display text-[2.6rem] font-semibold leading-[1.02] tracking-[-0.03em] text-paper sm:text-6xl lg:text-[5.25rem]"
+          className="enter max-w-4xl font-display text-[2.6rem] font-semibold leading-[1.02] tracking-[-0.04em] text-paper sm:text-6xl lg:text-[5.25rem]"
         />
 
         <p className="enter mt-8 max-w-2xl text-base leading-relaxed text-steel-300 sm:text-lg" style={{ ["--d" as string]: "220ms" }}>

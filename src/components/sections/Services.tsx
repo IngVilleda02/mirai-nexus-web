@@ -23,7 +23,7 @@ export function ServicesPanel() {
               <span className="h-px w-6 bg-line-strong transition-colors group-hover:bg-nexus-500" aria-hidden />
               <StatusBadge status={s.status} />
             </div>
-            <h4 className="mt-10 font-display text-2xl font-medium tracking-tight text-paper">{s.title}</h4>
+            <h4 className="mt-10 font-display text-2xl font-medium tracking-[-0.025em] text-paper">{s.title}</h4>
             <p className="mt-3 text-sm leading-relaxed text-steel-300">{s.summary}</p>
             <ul className="mt-8 grid gap-3 border-t border-line pt-6 sm:grid-cols-2">
               {s.items.map((item) => (

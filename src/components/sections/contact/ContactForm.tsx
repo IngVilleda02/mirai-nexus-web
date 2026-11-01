@@ -98,7 +98,7 @@ export function ContactForm() {
   }
 
   return (
-    <form noValidate onSubmit={onSubmit} className="border border-line bg-ink-900/60 p-6 sm:p-10" aria-label="Formulario de contacto">
+    <form noValidate onSubmit={onSubmit} className="surface p-6 sm:p-10" aria-label="Formulario de contacto">
       <div className="grid gap-6 sm:grid-cols-2">
         <div>
           <label htmlFor="name" className={labelCls}>Nombre *</label>
