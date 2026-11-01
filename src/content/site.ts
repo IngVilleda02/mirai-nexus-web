@@ -15,8 +15,8 @@ export const site = {
   location: "Querétaro, México",
   // PENDIENTE: correo comercial. Vacío = no se muestra en el sitio.
   email: "",
-  // Número en formato internacional sin "+" (ej. 5214421234567). Vacío = botón oculto.
-  whatsapp: process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? "",
+  // WhatsApp comercial en formato internacional sin "+" ni espacios.
+  whatsapp: process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "525660548768", // +52 56 6054 8768
   /** Horario de atención (hora del centro de México). days: 0 = domingo … 6 = sábado. */
   hours: {
     label: "Lunes a sábado",
