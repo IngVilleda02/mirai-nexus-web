@@ -14,7 +14,7 @@ export function Footer() {
     <footer className="border-t border-line bg-ink-950">
       <Container className="grid gap-12 py-16 md:grid-cols-12 md:py-20">
         <div className="md:col-span-5">
-          <Logo showSlogan />
+          <Logo height={64} showSlogan />
           <p className="mt-6 max-w-sm text-sm leading-relaxed text-steel-500">
             Conectamos ingeniería, industria y tecnología para crear nuevas oportunidades.
           </p>

@@ -36,7 +36,7 @@ export function Header() {
       </a>
       <Container className="flex h-16 items-center justify-between md:h-20">
         <Link href="/" aria-label="MIRAI NEXUS — inicio" onClick={() => setOpen(false)}>
-          <Logo />
+          <Logo height={46} priority />
         </Link>
 
         <nav aria-label="Principal" className="hidden items-center gap-9 lg:flex">

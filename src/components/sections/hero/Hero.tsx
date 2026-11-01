@@ -2,6 +2,7 @@ import { Container } from "@/components/ui/Container";
 import { ButtonLink } from "@/components/ui/Button";
 import { NetworkCanvas } from "./NetworkCanvas";
 import { site } from "@/content/site";
+import { LogoMark } from "@/components/brand/Logo";
 
 const sectors = ["Automotriz", "Maquinados CNC", "Soldadura", "Automatización", "Mantenimiento", "Proveedores"];
 
@@ -13,14 +14,18 @@ export function Hero() {
       <NetworkCanvas className="absolute inset-0 -z-10 h-full w-full opacity-70 [mask-image:linear-gradient(to_left,black_30%,transparent_85%)]" />
       <div className="absolute inset-x-0 bottom-0 -z-10 h-48 bg-gradient-to-t from-ink-950 to-transparent" aria-hidden />
 
-      {/* Geometría roja */}
-      <svg className="pointer-events-none absolute right-[6%] top-[22%] -z-10 hidden h-[340px] w-[340px] lg:block" viewBox="0 0 340 340" fill="none" aria-hidden>
-        <circle cx="170" cy="170" r="150" stroke="var(--color-line-strong)" />
-        <circle cx="170" cy="170" r="96" stroke="var(--color-line)" strokeDasharray="2 6" />
-        <path d="M170 20v40M170 280v40M20 170h40M280 170h40" stroke="var(--color-steel-700)" />
-        <path d="M276 64A150 150 0 0 1 320 170" stroke="var(--color-nexus-500)" strokeWidth="2" />
-        <rect x="166" y="166" width="8" height="8" fill="var(--color-nexus-500)" />
-      </svg>
+      {/* Símbolo de marca dentro de la geometría */}
+      <div className="pointer-events-none absolute right-[6%] top-[22%] -z-10 hidden h-[340px] w-[340px] lg:block" aria-hidden>
+        <svg className="absolute inset-0 h-full w-full" viewBox="0 0 340 340" fill="none">
+          <circle cx="170" cy="170" r="150" stroke="var(--color-line-strong)" />
+          <circle cx="170" cy="170" r="118" stroke="var(--color-line)" strokeDasharray="2 6" />
+          <path d="M170 0v30M170 310v30M0 170h30M310 170h30" stroke="var(--color-steel-700)" />
+          <path d="M276 64A150 150 0 0 1 320 170" stroke="var(--color-nexus-500)" strokeWidth="2" />
+        </svg>
+        <div className="absolute inset-0 flex items-center justify-center">
+          <LogoMark size={150} className="opacity-95" />
+        </div>
+      </div>
 
       {/* Etiqueta vertical japonesa */}
       <div className="absolute left-5 top-1/2 hidden -translate-y-1/2 flex-col items-center gap-4 xl:flex" aria-hidden>

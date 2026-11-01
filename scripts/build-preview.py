@@ -36,11 +36,12 @@ body = re.sub(r"<link\b[^>]*>", "", body)
 def inline_img(m):
     src = m.group(1)
     p = root / "public" / src.lstrip("/")
-    if p.exists() and p.suffix == ".svg":
-        return f'src="data:image/svg+xml;base64,{base64.b64encode(p.read_bytes()).decode()}"'
+    mime = {".svg": "image/svg+xml", ".png": "image/png", ".webp": "image/webp"}.get(p.suffix)
+    if p.exists() and mime:
+        return f'src="data:{mime};base64,{base64.b64encode(p.read_bytes()).decode()}"'
     return m.group(0)
 
-body = re.sub(r'src="(/portfolio/[^"]+)"', inline_img, body)
+body = re.sub(r'src="(/(?:portfolio|brand)/[^"]+)"', inline_img, body)
 body = re.sub(r'\s(srcset|imagesrcset)="[^"]*"', "", body)
 # Enlaces internos que no existen en la vista previa
 body = body.replace('href="/aviso-de-privacidad"', 'href="#contacto"').replace('href="/"', 'href="#inicio"')

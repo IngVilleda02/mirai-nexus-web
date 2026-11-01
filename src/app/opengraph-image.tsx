@@ -1,4 +1,6 @@
 import { ImageResponse } from "next/og";
+import { readFile } from "node:fs/promises";
+import path from "node:path";
 import { site } from "@/content/site";
 
 export const alt = `${site.name} — ${site.slogan}`;
@@ -6,7 +8,9 @@ export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
 /** Imagen Open Graph generada automáticamente (vista previa en WhatsApp, LinkedIn, etc.). */
-export default function OpengraphImage() {
+export default async function OpengraphImage() {
+  const logo = await readFile(path.join(process.cwd(), "public/brand/logo-full.png"));
+  const logoSrc = `data:image/png;base64,${logo.toString("base64")}`;
   return new ImageResponse(
     (
       <div
@@ -24,10 +28,7 @@ export default function OpengraphImage() {
           color: "#f3f4f6",
         }}
       >
-        <div style={{ display: "flex", alignItems: "center", gap: 20 }}>
-          <div style={{ width: 18, height: 18, background: "#e3172b" }} />
-          <div style={{ fontSize: 30, letterSpacing: 10, fontWeight: 600 }}>MIRAI NEXUS</div>
-        </div>
+        <img src={logoSrc} alt="" width={281} height={120} />
         <div style={{ display: "flex", flexDirection: "column" }}>
           <div style={{ fontSize: 76, fontWeight: 600, lineHeight: 1.05, letterSpacing: -2, maxWidth: 950 }}>
             Conectamos la industria con el futuro.

@@ -11,7 +11,7 @@ export function organizationJsonLd() {
     slogan: site.slogan,
     description: site.description,
     url: site.url,
-    logo: `${site.url}/icon.svg`,
+    logo: `${site.url}/brand/logo-full.png`,
     email: site.email,
     areaServed: { "@type": "Country", name: "México" },
     address: { "@type": "PostalAddress", addressRegion: "Querétaro", addressCountry: "MX" },
