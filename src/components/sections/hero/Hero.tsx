@@ -1,19 +1,8 @@
 import { Container } from "@/components/ui/Container";
-import { ButtonLink } from "@/components/ui/Button";
 import { NetworkCanvas } from "./NetworkCanvas";
 import { TypewriterHeadline } from "./TypewriterHeadline";
 import { site } from "@/content/site";
 import { LogoMark } from "@/components/brand/Logo";
-
-const sectors = [
-  "Automotriz",
-  "Maquinados CNC",
-  "Soldadura",
-  "Automatización",
-  "Mantenimiento",
-  "Proveedores",
-  "Negocios en crecimiento",
-];
 
 /** Frases del título principal (efecto máquina de escribir, en ciclo). */
 const headlines = ["Conectamos la industria con el futuro.", "Conectamos tu empresa con la industria."];
@@ -61,31 +50,7 @@ export function Hero() {
           Desarrollamos soluciones digitales que impulsan empresas, conectan proveedores y transforman capacidades
           industriales en nuevas oportunidades de negocio.
         </p>
-
-        <div className="mt-11 flex flex-col gap-3 sm:flex-row sm:gap-4">
-          <ButtonLink href="#servicios" variant="secondary">
-            Conoce nuestros servicios
-          </ButtonLink>
-          <ButtonLink href="#contacto" arrow>
-            Solicita una propuesta
-          </ButtonLink>
-        </div>
       </Container>
-
-      {/* Franja de sectores */}
-      <div className="border-t border-line bg-ink-950/60 backdrop-blur-sm">
-        <Container className="relative flex items-center gap-6 overflow-hidden py-5">
-          <span className="shrink-0 font-mono text-[10px] uppercase tracking-[0.25em] text-nexus-500">Sectores</span>
-          <ul className="flex gap-6 overflow-x-auto whitespace-nowrap font-mono text-[11px] uppercase tracking-[0.2em] text-steel-500 [scrollbar-width:none]">
-            {sectors.map((s, i) => (
-              <li key={s} className="flex items-center gap-6">
-                {i > 0 && <span className="h-1 w-1 bg-steel-700" aria-hidden />}
-                {s}
-              </li>
-            ))}
-          </ul>
-        </Container>
-      </div>
     </section>
   );
 }

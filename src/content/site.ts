@@ -27,8 +27,7 @@ export const site = {
     timeZone: "America/Mexico_City",
   },
   whatsappMessage: "Hola, me interesa recibir una propuesta de Mirai Nexus.",
-  // TODO: reemplazar con el perfil oficial.
-  instagram: "https://www.instagram.com/mirainexus",
+  instagram: "https://www.instagram.com/mirai.nexuss",
   keywords: [
     "desarrollo web industrial",
     "páginas web para proveedores industriales",
