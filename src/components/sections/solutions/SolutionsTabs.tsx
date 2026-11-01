@@ -2,6 +2,9 @@
 
 import { useCallback, useEffect, useRef, useState, type KeyboardEvent, type ReactNode } from "react";
 
+/** Evento global que avisa qué pestaña está abierta (lo usa la barra de navegación). */
+export const TAB_EVENT = "mirai:tab";
+
 export interface TabDef {
   id: string;
   label: string;
@@ -61,6 +64,10 @@ export function SolutionsTabs({ tabs, aliases = {}, sectionId }: SolutionsTabsPr
     };
   }, [openFromHash]);
 
+  useEffect(() => {
+    window.dispatchEvent(new CustomEvent(TAB_EVENT, { detail: active }));
+  }, [active]);
+
   const onKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
     const i = tabs.findIndex((t) => t.id === active);
     let next = i;
@@ -98,13 +105,10 @@ export function SolutionsTabs({ tabs, aliases = {}, sectionId }: SolutionsTabsPr
               aria-controls={`panel-${t.id}`}
               tabIndex={selected ? 0 : -1}
               onClick={() => setActive(t.id)}
-              className={`group relative flex min-h-16 flex-col items-start justify-center gap-1 px-2 py-3 text-left transition-colors sm:flex-row sm:items-center sm:gap-3 sm:px-6 ${
+              className={`group relative flex min-h-14 items-center justify-center px-2 py-3 text-center transition-colors sm:px-6 ${
                 i > 0 ? "border-l border-line" : ""
               } ${selected ? "bg-ink-900 text-paper" : "text-steel-500 hover:bg-ink-900/60 hover:text-paper"}`}
             >
-              <span className={`font-mono text-[10px] tracking-[0.2em] ${selected ? "text-nexus-500" : "text-steel-700"}`}>
-                /0{i + 1}
-              </span>
               <span className="font-display text-sm font-medium leading-tight sm:text-base">{t.label}</span>
               <span
                 className={`absolute inset-x-0 bottom-0 h-[2px] origin-left bg-nexus-500 transition-transform duration-500 ease-[var(--ease-out-expo)] ${

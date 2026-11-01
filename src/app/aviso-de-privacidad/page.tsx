@@ -58,7 +58,12 @@ export default function PrivacyPage() {
             <p>
               Puedes solicitar el acceso, rectificación, cancelación u oposición al tratamiento de tus datos, así como
               revocar tu consentimiento, escribiendo a{" "}
-              <a href={`mailto:${site.email}`} className="text-paper underline underline-offset-4">{site.email}</a>.
+              {site.email ? (
+                <a href={`mailto:${site.email}`} className="text-paper underline underline-offset-4">{site.email}</a>
+              ) : (
+                "[correo de contacto]"
+              )}
+              .
             </p>
 
             <h2 className={h2}>Cambios a este aviso</h2>

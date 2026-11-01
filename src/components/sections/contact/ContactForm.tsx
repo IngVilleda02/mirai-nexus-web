@@ -168,15 +168,23 @@ export function ContactForm() {
           <div className="mt-6 border border-line-strong bg-ink-950 p-5 text-sm leading-relaxed text-steel-300">
             <p className="font-medium text-paper">El envío en línea aún no está activo.</p>
             <p className="mt-1">
-              Tu solicitud <strong className="text-paper">no se ha enviado</strong>. Mientras activamos este canal, escríbenos a{" "}
-              <a href={`mailto:${site.email}`} className="text-paper underline underline-offset-4">{site.email}</a>
-              {wa && (
+              Tu solicitud <strong className="text-paper">no se ha enviado</strong>.{" "}
+              {wa ? (
                 <>
-                  {" "}o por{" "}
-                  <a href={wa} target="_blank" rel="noopener noreferrer" className="text-paper underline underline-offset-4">WhatsApp</a>
+                  Mientras activamos este canal, escríbenos por{" "}
+                  <a href={wa} target="_blank" rel="noopener noreferrer" className="text-paper underline underline-offset-4">
+                    WhatsApp
+                  </a>
+                  .
                 </>
+              ) : site.email ? (
+                <>
+                  Mientras activamos este canal, escríbenos a{" "}
+                  <a href={`mailto:${site.email}`} className="text-paper underline underline-offset-4">{site.email}</a>.
+                </>
+              ) : (
+                "Muy pronto habilitaremos este canal. Gracias por tu paciencia."
               )}
-              .
             </p>
           </div>
         )}

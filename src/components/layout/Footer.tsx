@@ -11,7 +11,7 @@ export function Footer() {
   const link = "text-sm text-steel-300 transition-colors hover:text-paper";
 
   return (
-    <footer className="border-t border-line bg-ink-950">
+    <footer className="border-t border-line bg-ink-950 pb-20 lg:pb-0">
       <Container className="grid gap-12 py-16 md:grid-cols-12 md:py-20">
         <div className="md:col-span-5">
           <Logo height={64} showSlogan />
@@ -34,10 +34,15 @@ export function Footer() {
         <div className="md:col-span-4">
           <p className={heading}>Contacto</p>
           <ul className="space-y-3">
-            <li><a href={`mailto:${site.email}`} className={link}>{site.email}</a></li>
+            {site.email && <li><a href={`mailto:${site.email}`} className={link}>{site.email}</a></li>}
             {wa && <li><a href={wa} target="_blank" rel="noopener noreferrer" className={link}>WhatsApp</a></li>}
             <li><a href={site.instagram} target="_blank" rel="noopener noreferrer" className={link}>Instagram</a></li>
             <li><a href="#contacto" className={link}>Solicita una propuesta</a></li>
+            <li className="pt-2 text-xs leading-relaxed text-steel-500">
+              {site.hours.label}
+              <br />
+              {site.hours.range}
+            </li>
           </ul>
         </div>
       </Container>

@@ -15,7 +15,6 @@ export function Solutions() {
     <section id="soluciones" className="relative scroll-mt-16 border-t border-line bg-ink-900/40 py-24 md:scroll-mt-20 md:py-32">
       <Container>
         <SectionHeader
-          index="02"
           label="Soluciones"
           title={
             <>

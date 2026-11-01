@@ -2,33 +2,44 @@
 (function () {
   var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-  /* Header: fondo al hacer scroll + menú móvil */
-  var header = document.querySelector("header");
-  var toggle = document.querySelector('[aria-controls="menu-movil"]');
-  var menu = document.getElementById("menu-movil");
-  var bars = toggle ? toggle.querySelectorAll("span") : [];
-  var open = false;
-  function paint() {
-    var on = window.scrollY > 24 || open;
+  /* Header: fondo al hacer scroll + barra flotante con apartado activo */
+  var header = document.querySelector("[data-header]");
+  var currentTab = "servicios";
+  function spy() {
+    var on = window.scrollY > 24;
     header.classList.toggle("border-transparent", !on);
-    ["border-line", "bg-ink-950/85", "backdrop-blur-md"].forEach(function (c) { header.classList.toggle(c, on); });
+    ["border-line", "bg-ink-950/80", "backdrop-blur-md"].forEach(function (c) { header.classList.toggle(c, on); });
+    var vh = window.innerHeight * 0.4, cur = "";
+    ["nosotros", "soluciones", "contacto"].forEach(function (id) {
+      var el = document.getElementById(id); if (el && el.getBoundingClientRect().top < vh) cur = id;
+    });
+    if (cur === "soluciones") {
+      var ind = document.getElementById("industrias");
+      cur = currentTab === "servicios" && ind && ind.getBoundingClientRect().top < vh ? "industrias" : currentTab;
+    }
+    document.querySelectorAll("[data-nav]").forEach(function (a) {
+      var act = a.getAttribute("data-nav") === "#" + cur;
+      a.classList.toggle("text-paper", act); a.classList.toggle("text-steel-300", !act);
+      var bar = a.querySelector("[data-nav-bar]"); bar.classList.toggle("scale-x-100", act); bar.classList.toggle("scale-x-0", !act);
+      var mb = a.closest("[data-mobile-bar]");
+      if (act && mb && spy.last !== cur) mb.scrollTo({ left: a.offsetLeft - (mb.clientWidth - a.offsetWidth) / 2, behavior: "smooth" });
+    });
+    spy.last = cur;
   }
-  function setOpen(v) {
-    open = v;
-    menu.hidden = !v;
-    toggle.setAttribute("aria-expanded", String(v));
-    toggle.setAttribute("aria-label", v ? "Cerrar menú" : "Abrir menú");
-    if (bars[0]) { bars[0].classList.toggle("rotate-45", v); bars[0].classList.toggle("-translate-y-1", !v); }
-    if (bars[1]) { bars[1].classList.toggle("-rotate-45", v); bars[1].classList.toggle("translate-y-1", !v); }
-    document.body.style.overflow = v ? "hidden" : "";
-    paint();
+  window.addEventListener("scroll", spy, { passive: true });
+  window.addEventListener("mirai:tab", function (e) { currentTab = e.detail; spy(); });
+  spy();
+
+  /* Estado del horario de atención */
+  var st = document.getElementById("pv-open-status");
+  if (st) {
+    var parts = new Intl.DateTimeFormat("en-US", { timeZone: "America/Mexico_City", weekday: "short", hour: "numeric", hour12: false }).formatToParts(new Date());
+    var wd = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"].indexOf(parts.find(function (p) { return p.type === "weekday"; }).value);
+    var hr = Number(parts.find(function (p) { return p.type === "hour"; }).value) % 24;
+    var open = wd >= 1 && wd <= 6 && hr >= 10 && hr < 19;
+    st.outerHTML = '<span class="inline-flex items-center gap-2 border px-2.5 py-1 font-mono text-[10px] uppercase tracking-[0.18em] ' +
+      (open ? 'border-nexus-500/40 text-paper"><span class="h-1.5 w-1.5 rounded-full bg-nexus-500"></span>Abierto ahora' : 'border-line-strong text-steel-500"><span class="h-1.5 w-1.5 rounded-full bg-steel-700"></span>Fuera de horario') + '</span>';
   }
-  if (toggle && menu) {
-    toggle.addEventListener("click", function () { setOpen(!open); });
-    menu.querySelectorAll("a").forEach(function (a) { a.addEventListener("click", function () { setOpen(false); }); });
-  }
-  window.addEventListener("scroll", paint, { passive: true });
-  paint();
 
   /* Aparición suave solo para lo que está fuera de pantalla al cargar */
   if (!reduced && "IntersectionObserver" in window) {
@@ -75,12 +86,12 @@
         var on = b.getAttribute("data-tab") === id;
         b.setAttribute("aria-selected", String(on)); b.tabIndex = on ? 0 : -1;
         ["bg-ink-900", "text-paper"].forEach(function (c) { b.classList.toggle(c, on); });
-        ["text-steel-500"].forEach(function (c) { b.classList.toggle(c, !on); });
-        var idx = b.querySelector(".font-mono"); idx.classList.toggle("text-nexus-500", on); idx.classList.toggle("text-steel-700", !on);
+        ["text-steel-500", "hover:bg-ink-900/60", "hover:text-paper"].forEach(function (c) { b.classList.toggle(c, !on); });
         var bar = b.lastElementChild; bar.classList.toggle("scale-x-100", on); bar.classList.toggle("scale-x-0", !on);
         if (on && focus) b.focus();
       });
       document.querySelectorAll("[data-panel]").forEach(function (p) { p.hidden = p.getAttribute("data-panel") !== id; });
+      window.dispatchEvent(new CustomEvent("mirai:tab", { detail: id }));
     }
     tabs.forEach(function (b, i) {
       b.addEventListener("click", function () { activate(b.getAttribute("data-tab")); });

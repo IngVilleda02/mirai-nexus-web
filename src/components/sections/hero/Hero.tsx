@@ -20,7 +20,7 @@ const headlines = ["Conectamos la industria con el futuro.", "Conectamos tu empr
 
 export function Hero() {
   return (
-    <section id="inicio" className="relative isolate flex min-h-[100svh] flex-col overflow-hidden pt-16 md:pt-20">
+    <section id="inicio" className="relative isolate flex min-h-[100svh] flex-col overflow-hidden pb-[76px] pt-16 md:pt-20 lg:pb-0">
       {/* Capas de fondo */}
       <div className="bg-grid absolute inset-0 -z-20 [mask-image:radial-gradient(ellipse_at_70%_40%,black_20%,transparent_75%)]" aria-hidden />
       <NetworkCanvas className="absolute inset-0 -z-10 h-full w-full opacity-70 [mask-image:linear-gradient(to_left,black_30%,transparent_85%)]" />
@@ -84,9 +84,6 @@ export function Hero() {
               </li>
             ))}
           </ul>
-          <span className="ml-auto hidden shrink-0 font-mono text-[10px] tracking-[0.2em] text-steel-700 md:block">
-            QRO · MX
-          </span>
         </Container>
       </div>
     </section>

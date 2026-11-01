@@ -24,7 +24,6 @@ export function IndustriesPanel() {
                 name={ind.icon}
                 className="h-9 w-9 text-steel-300 transition-colors duration-500 group-hover:text-nexus-500"
               />
-              <span className="font-mono text-[10px] tracking-[0.2em] text-steel-700">IND-0{i + 1}</span>
             </div>
             <h4 className="mt-auto pt-12 font-display text-xl font-medium uppercase tracking-[0.06em] text-paper">
               {ind.name}

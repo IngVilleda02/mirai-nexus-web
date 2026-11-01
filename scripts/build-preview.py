@@ -46,6 +46,7 @@ body = re.sub(r'\s(srcset|imagesrcset)="[^"]*"', "", body)
 # Enlaces internos que no existen en la vista previa
 body = body.replace('href="/aviso-de-privacidad"', 'href="#contacto"').replace('href="/"', 'href="#inicio"')
 
+body = body.replace('>Horario de atención</span>', '>Horario de atención</span><span id="pv-open-status"></span>', 1)
 js = (root / "scripts/preview-behavior.js").read_text()
 
 out = f"""<title>MIRAI NEXUS</title>

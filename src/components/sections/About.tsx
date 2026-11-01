@@ -13,7 +13,6 @@ export function About() {
     <section id="nosotros" className="relative border-t border-line py-24 md:py-36">
       <Container>
         <SectionHeader
-          index="01"
           label="Quiénes somos"
           title={
             <>
@@ -51,7 +50,7 @@ export function About() {
                 delay={i * 90}
                 className="group flex gap-6 bg-ink-950 p-6 transition-colors hover:bg-ink-900 sm:p-8"
               >
-                <span className="font-mono text-xs text-nexus-500">0{i + 1}</span>
+                <span className="mt-2 h-1.5 w-1.5 shrink-0 bg-nexus-500" aria-hidden />
                 <div>
                   <h3 className="font-display text-lg font-medium text-paper">{p.k}</h3>
                   <p className="mt-2 text-sm leading-relaxed text-steel-300">{p.t}</p>

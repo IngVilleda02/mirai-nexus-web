@@ -20,9 +20,7 @@ export function ServicesPanel() {
             className="frame-corners group flex flex-col bg-ink-950 p-7 transition-colors duration-500 hover:bg-ink-900 sm:p-10"
           >
             <div className="flex items-start justify-between gap-4">
-              <span className="font-mono text-sm text-steel-700 transition-colors group-hover:text-nexus-500">
-                /{s.code}
-              </span>
+              <span className="h-px w-6 bg-line-strong transition-colors group-hover:bg-nexus-500" aria-hidden />
               <StatusBadge status={s.status} />
             </div>
             <h4 className="mt-10 font-display text-2xl font-medium tracking-tight text-paper">{s.title}</h4>

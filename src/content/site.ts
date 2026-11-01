@@ -13,10 +13,19 @@ export const site = {
   url: (process.env.NEXT_PUBLIC_SITE_URL ?? "https://mirainexus.com").replace(/\/$/, ""),
   locale: "es_MX",
   location: "Querétaro, México",
-  // TODO: reemplazar con el correo comercial definitivo.
-  email: "contacto@mirainexus.com",
+  // PENDIENTE: correo comercial. Vacío = no se muestra en el sitio.
+  email: "",
   // Número en formato internacional sin "+" (ej. 5214421234567). Vacío = botón oculto.
   whatsapp: process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? "",
+  /** Horario de atención (hora del centro de México). days: 0 = domingo … 6 = sábado. */
+  hours: {
+    label: "Lunes a sábado",
+    range: "10:00 a.m. – 7:00 p.m.",
+    days: [1, 2, 3, 4, 5, 6],
+    open: 10,
+    close: 19,
+    timeZone: "America/Mexico_City",
+  },
   whatsappMessage: "Hola, me interesa recibir una propuesta de Mirai Nexus.",
   // TODO: reemplazar con el perfil oficial.
   instagram: "https://www.instagram.com/mirainexus",

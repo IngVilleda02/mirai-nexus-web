@@ -127,6 +127,15 @@ body {
   animation: scan 3.2s var(--ease-out-expo) infinite;
 }
 
+/* Tarjetas flotantes (contacto) */
+@keyframes float-y {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+.float-card {
+  animation: float-y 6s ease-in-out infinite;
+}
+
 /* Cursor de la máquina de escribir */
 @keyframes caret-blink {
   0%, 45% { opacity: 1; }
@@ -139,6 +148,7 @@ body {
 
 @media (prefers-reduced-motion: reduce) {
   .tw-caret { animation: none; }
+  .float-card { animation: none; }
   html { scroll-behavior: auto; }
   .reveal { opacity: 1; transform: none; transition: none; }
   .animate-scan { animation: none; }
