@@ -39,10 +39,10 @@ export function validate(p: ContactPayload): ContactErrors {
   const e: ContactErrors = {};
   if (p.name.length < 2) e.name = "Escribe tu nombre.";
   if (p.company.length < 2) e.company = "Escribe el nombre de tu empresa.";
-  if (!EMAIL_RE.test(p.email)) e.email = "Escribe un correo válido.";
+  if (p.email && !EMAIL_RE.test(p.email)) e.email = "Revisa el formato del correo.";
   if (p.phone && !PHONE_RE.test(p.phone)) e.phone = "Revisa el formato del teléfono.";
   if (!p.service) e.service = "Selecciona un tipo de servicio.";
   if (p.message.length < 10) e.message = "Cuéntanos un poco más sobre tu proyecto (mín. 10 caracteres).";
-  if (!p.consent) e.consent = "Necesitamos tu autorización para responderte.";
+  if (!p.consent) e.consent = "Necesitamos tu autorización para contactarte.";
   return e;
 }

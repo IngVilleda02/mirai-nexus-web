@@ -5,15 +5,14 @@ import { useState, type FormEvent } from "react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/Button";
 import { serviceOptions } from "@/content/services";
-import { site, whatsappHref } from "@/content/site";
+import { whatsappHref } from "@/content/site";
 import { LIMITS, normalize, validate, type ContactErrors } from "@/lib/contact/schema";
 
-type Status =
-  | { kind: "idle" }
-  | { kind: "sending" }
-  | { kind: "success" }
-  | { kind: "unavailable" }
-  | { kind: "error"; message: string };
+/**
+ * Formulario de contacto: valida y abre WhatsApp con una plantilla que lleva todo lo que escribió el cliente.
+ * No usa servidor ni correo (como el sitio de CABA).
+ */
+type Status = { kind: "idle" } | { kind: "sent"; url: string };
 
 const field =
   "w-full border border-line bg-ink-950 px-4 py-3.5 text-sm text-paper placeholder:text-steel-700 transition-colors focus:border-nexus-500 focus:outline-none aria-[invalid=true]:border-nexus-600";
@@ -23,7 +22,7 @@ export function ContactForm() {
   const [status, setStatus] = useState<Status>({ kind: "idle" });
   const [errors, setErrors] = useState<ContactErrors>({});
 
-  async function onSubmit(e: FormEvent<HTMLFormElement>) {
+  function onSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const form = e.currentTarget;
     const fd = new FormData(form);
@@ -35,37 +34,32 @@ export function ContactForm() {
       first?.focus();
       return;
     }
+    if (data.website) return; // bot
 
-    setStatus({ kind: "sending" });
-    try {
-      const res = await fetch("/api/contact", {
-        method: "POST",
-        headers: { "content-type": "application/json" },
-        body: JSON.stringify(data),
-      });
-      const json = (await res.json().catch(() => ({}))) as { ok?: boolean; code?: string; errors?: ContactErrors };
-
-      if (res.ok && json.ok) {
-        setStatus({ kind: "success" });
-        toast.success("Solicitud enviada", { description: "Te responderemos dentro de nuestro horario de atención." });
-        form.reset();
-      } else if (res.status === 503 || json.code === "not_configured") {
-        setStatus({ kind: "unavailable" });
-        toast("El envío en línea aún no está activo", { description: "Tu solicitud no se envió. Puedes escribirnos por WhatsApp." });
-      } else if (res.status === 400 && json.errors) {
-        setErrors(json.errors);
-        setStatus({ kind: "idle" });
-      } else if (res.status === 429) {
-        setStatus({ kind: "error", message: "Has enviado varias solicitudes. Intenta de nuevo en unos minutos." });
-        toast.error("Demasiados intentos", { description: "Espera unos minutos e intenta de nuevo." });
-      } else {
-        setStatus({ kind: "error", message: "No pudimos enviar tu solicitud. Intenta de nuevo o contáctanos directamente." });
-        toast.error("No pudimos enviar tu solicitud", { description: "Intenta de nuevo o escríbenos por WhatsApp." });
-      }
-    } catch {
-      setStatus({ kind: "error", message: "Sin conexión. Revisa tu red e intenta de nuevo." });
-      toast.error("Sin conexión", { description: "Revisa tu red e intenta de nuevo." });
+    const service = serviceOptions.find((o) => o.value === data.service)?.label ?? data.service;
+    const text = [
+      "*Solicitud de propuesta — MIRAI NEXUS*",
+      "",
+      `*Nombre:* ${data.name}`,
+      `*Empresa:* ${data.company}`,
+      ...(data.email ? [`*Correo:* ${data.email}`] : []),
+      ...(data.phone ? [`*Teléfono:* ${data.phone}`] : []),
+      `*Servicio:* ${service}`,
+      "",
+      "*Proyecto:*",
+      data.message,
+      "",
+      "_Enviado desde el sitio web de MIRAI NEXUS._",
+    ].join("\n");
+    const url = whatsappHref(text);
+    if (!url) {
+      toast.error("WhatsApp no está disponible", { description: "Intenta más tarde." });
+      return;
     }
+    window.open(url, "_blank", "noopener");
+    setStatus({ kind: "sent", url });
+    toast.success("Se abrió WhatsApp", { description: "Tu solicitud está lista; solo toca enviar." });
+    form.reset();
   }
 
   const err = (k: keyof ContactErrors) =>
@@ -79,16 +73,14 @@ export function ContactForm() {
     "aria-describedby": errors[k] ? `${k}-error` : undefined,
   });
 
-  const wa = whatsappHref();
-
-  if (status.kind === "success") {
+  if (status.kind === "sent") {
     return (
       <div role="status" className="flex min-h-[420px] flex-col justify-center border border-line bg-ink-900 p-8 sm:p-12">
         <span className="mb-6 h-2 w-2 bg-nexus-500" aria-hidden />
-        <h3 className="font-display text-2xl font-medium text-paper">Solicitud recibida.</h3>
+        <h3 className="font-display text-2xl font-medium text-paper">Se abrió WhatsApp.</h3>
         <p className="mt-3 max-w-md text-sm leading-relaxed text-steel-300">
-          Gracias por contactarnos. Revisaremos la información de tu proyecto y te responderemos al correo que nos
-          compartiste.
+          Tu solicitud ya está escrita en el chat; solo toca enviar. Si no se abrió,{" "}
+          <a href={status.url} target="_blank" rel="noopener noreferrer" className="text-paper underline underline-offset-4">ábrelo aquí</a>.
         </p>
         <button type="button" onClick={() => setStatus({ kind: "idle" })} className="mt-8 self-start text-sm text-steel-300 underline-offset-4 hover:text-paper hover:underline">
           Enviar otra solicitud
@@ -111,7 +103,7 @@ export function ContactForm() {
           {err("company")}
         </div>
         <div>
-          <label htmlFor="email" className={labelCls}>Correo electrónico *</label>
+          <label htmlFor="email" className={labelCls}>Correo electrónico</label>
           <input id="email" name="email" type="email" autoComplete="email" inputMode="email" maxLength={LIMITS.email} className={field} {...aria("email")} />
           {err("email")}
         </div>
@@ -155,7 +147,7 @@ export function ContactForm() {
               <Link href="/aviso-de-privacidad" className="text-paper underline underline-offset-4 hover:text-nexus-400">
                 aviso de privacidad
               </Link>{" "}
-              y autorizo que me contacten sobre mi solicitud.
+              y autorizo que me contacten por WhatsApp sobre mi solicitud.
             </span>
           </label>
           {err("consent")}
@@ -163,41 +155,12 @@ export function ContactForm() {
       </div>
 
       <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <Button type="submit" arrow disabled={status.kind === "sending"} className="w-full sm:w-auto">
-          {status.kind === "sending" ? "Enviando…" : "Enviar solicitud"}
+        <Button type="submit" arrow className="w-full sm:w-auto">
+          Enviar por WhatsApp
         </Button>
         <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-steel-700">* Campos obligatorios</p>
       </div>
 
-      <div aria-live="polite">
-        {status.kind === "unavailable" && (
-          <div className="mt-6 border border-line-strong bg-ink-950 p-5 text-sm leading-relaxed text-steel-300">
-            <p className="font-medium text-paper">El envío en línea aún no está activo.</p>
-            <p className="mt-1">
-              Tu solicitud <strong className="text-paper">no se ha enviado</strong>.{" "}
-              {wa ? (
-                <>
-                  Mientras activamos este canal, escríbenos por{" "}
-                  <a href={wa} target="_blank" rel="noopener noreferrer" className="text-paper underline underline-offset-4">
-                    WhatsApp
-                  </a>
-                  .
-                </>
-              ) : site.email ? (
-                <>
-                  Mientras activamos este canal, escríbenos a{" "}
-                  <a href={`mailto:${site.email}`} className="text-paper underline underline-offset-4">{site.email}</a>.
-                </>
-              ) : (
-                "Muy pronto habilitaremos este canal. Gracias por tu paciencia."
-              )}
-            </p>
-          </div>
-        )}
-        {status.kind === "error" && (
-          <p className="mt-6 border border-nexus-600/50 bg-nexus-900/30 p-4 text-sm text-paper">{status.message}</p>
-        )}
-      </div>
     </form>
   );
 }

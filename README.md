@@ -53,28 +53,21 @@ Cuando tengas clientes suficientes, pon `showDemoProjects = false` para ocultar 
 ## Pendientes antes de publicar
 
 - [x] Logotipo oficial, WhatsApp e Instagram.
-- [ ] Contraseña de aplicación de Gmail (`SMTP_USER` / `SMTP_PASS`) para el formulario; el correo que recibe va en `CONTACT_TO_EMAIL` (oculto).
+- [ ] (Opcional, después) Envío del formulario por correo además de WhatsApp.
 - [ ] Dominio definitivo en `NEXT_PUBLIC_SITE_URL` (metadatos, sitemap y Open Graph).
 - [ ] Completar y revisar con un asesor legal el aviso de privacidad (`[razón social]`, `[domicilio]`, `[fecha]`, correo de contacto ARCO).
 - [ ] Confirmar los textos de las tarjetas de beneficios (`src/content/contact.ts`).
 - [ ] Dar de alta el sitio en Google Search Console y Google Business Profile.
 
 ## Formulario de contacto
-
-`POST /api/contact` valida, filtra spam (honeypot + límite por IP) y entrega la solicitud:
-
-- **Correo por SMTP (recomendado)**: Gmail con contraseña de aplicación: `SMTP_USER` (tu Gmail), `SMTP_PASS` (contraseña de
-  aplicación), `CONTACT_TO_EMAIL` (quien recibe; nunca aparece en la página). Por defecto `smtp.gmail.com:465`.
-- Alternativas: `CONTACT_PROVIDER=webhook` (`CONTACT_WEBHOOK_URL`) o `CONTACT_PROVIDER=resend`.
-
-Se responde «recibida» solo si el correo salió de verdad; si no hay correo configurado, el sitio avisa que
-la solicitud **no** se envió. Nunca se simula un envío exitoso.
+Valida los datos y abre WhatsApp (`NEXT_PUBLIC_WHATSAPP_NUMBER`) con una plantilla que lleva nombre, empresa, correo,
+teléfono, servicio y descripción del proyecto. No usa servidor ni correo. Lógica en `src/components/sections/contact/ContactForm.tsx`.
 
 ## Publicación en Vercel
 1. El código está en GitHub (repositorio `mirai-nexus-web`).
 2. vercel.com → *Add New → Project* → importa el repositorio. Vercel detecta Next.js; no cambies la compilación.
-3. Variables (*Settings → Environment Variables*): `NEXT_PUBLIC_SITE_URL` (la URL que da Vercel, ej. `https://mirai-nexus.vercel.app`),
-   `NEXT_PUBLIC_WHATSAPP_NUMBER`, `SMTP_USER`, `SMTP_PASS`, `CONTACT_TO_EMAIL`. Después de cambiar variables, *Redeploy*.
+3. Variables (*Settings → Environment Variables*): `NEXT_PUBLIC_SITE_URL` (la URL que da Vercel, ej. `https://mirai-nexus.vercel.app`)
+   y `NEXT_PUBLIC_WHATSAPP_NUMBER`. Después de cambiar variables, *Redeploy*.
 4. Cada cambio que se sube a GitHub se publica solo.
 Antes de cada publicación puedes correr `npm run check` (tipos + lint + build).
 
