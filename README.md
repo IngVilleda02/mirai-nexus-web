@@ -53,7 +53,7 @@ Cuando tengas clientes suficientes, pon `showDemoProjects = false` para ocultar 
 ## Pendientes antes de publicar
 
 - [x] Logotipo oficial, WhatsApp e Instagram.
-- [ ] Buzón de Hostinger (`SMTP_USER` / `SMTP_PASS`) para el formulario; el correo que recibe va en `CONTACT_TO_EMAIL` (oculto).
+- [ ] Contraseña de aplicación de Gmail (`SMTP_USER` / `SMTP_PASS`) para el formulario; el correo que recibe va en `CONTACT_TO_EMAIL` (oculto).
 - [ ] Dominio definitivo en `NEXT_PUBLIC_SITE_URL` (metadatos, sitemap y Open Graph).
 - [ ] Completar y revisar con un asesor legal el aviso de privacidad (`[razón social]`, `[domicilio]`, `[fecha]`, correo de contacto ARCO).
 - [ ] Confirmar los textos de las tarjetas de beneficios (`src/content/contact.ts`).
@@ -63,28 +63,20 @@ Cuando tengas clientes suficientes, pon `showDemoProjects = false` para ocultar 
 
 `POST /api/contact` valida, filtra spam (honeypot + límite por IP) y entrega la solicitud:
 
-- **Correo por SMTP (recomendado, Hostinger)**: `SMTP_USER`, `SMTP_PASS` (buzón de Hostinger, ej. `contacto@mirainexus.com`),
-  `CONTACT_TO_EMAIL` (quien recibe; nunca aparece en la página). `SMTP_HOST=smtp.hostinger.com`, `SMTP_PORT=465` por defecto.
-- **Panel de cotizaciones**: con `NEXT_PUBLIC_PANEL_URL`, cada solicitud también se guarda en *Solicitudes* de MIRAI NEXUS.
+- **Correo por SMTP (recomendado)**: Gmail con contraseña de aplicación: `SMTP_USER` (tu Gmail), `SMTP_PASS` (contraseña de
+  aplicación), `CONTACT_TO_EMAIL` (quien recibe; nunca aparece en la página). Por defecto `smtp.gmail.com:465`.
 - Alternativas: `CONTACT_PROVIDER=webhook` (`CONTACT_WEBHOOK_URL`) o `CONTACT_PROVIDER=resend`.
 
-Se responde «recibida» solo si el correo o el panel la recibieron de verdad; si no hay ninguno, el sitio avisa que
+Se responde «recibida» solo si el correo salió de verdad; si no hay correo configurado, el sitio avisa que
 la solicitud **no** se envió. Nunca se simula un envío exitoso.
 
-## Publicación en Hostinger (app Node.js, plan Unlimited o Cloud)
-
-1. hPanel → Sitios web → Agregar → **App web de Node.js** → sube `mirai-nexus-app.zip` (o conecta GitHub). Dominio `mirainexus.com`, Next.js, Node 22.
-2. Variables (las `NEXT_PUBLIC_` se graban al compilar): `NEXT_PUBLIC_SITE_URL`, `NEXT_PUBLIC_WHATSAPP_NUMBER`, `NEXT_PUBLIC_PANEL_URL`,
-   `SMTP_USER`, `SMTP_PASS`, `CONTACT_TO_EMAIL`.
-3. Despliega y revisa: formulario, WhatsApp, `/admin`, `sitemap.xml` y la imagen al pegar el enlace en WhatsApp.
-
-Guía completa de los tres sitios: `LEEME-GUIA-HOSTINGER.md` en la carpeta de despliegue.
+## Publicación en Vercel
+1. El código está en GitHub (repositorio `mirai-nexus-web`).
+2. vercel.com → *Add New → Project* → importa el repositorio. Vercel detecta Next.js; no cambies la compilación.
+3. Variables (*Settings → Environment Variables*): `NEXT_PUBLIC_SITE_URL` (la URL que da Vercel, ej. `https://mirai-nexus.vercel.app`),
+   `NEXT_PUBLIC_WHATSAPP_NUMBER`, `SMTP_USER`, `SMTP_PASS`, `CONTACT_TO_EMAIL`. Después de cambiar variables, *Redeploy*.
+4. Cada cambio que se sube a GitHub se publica solo.
 Antes de cada publicación puedes correr `npm run check` (tipos + lint + build).
-
-## Acceso administrativo (/admin)
-Con `NEXT_PUBLIC_PANEL_URL` (ej. `https://panel.mirainexus.com`), `mirainexus.com/admin` lleva al acceso del panel de
-cotizaciones con el estilo de MIRAI NEXUS (`/acceso/mirai-nexus`). Sin la variable, `/admin` responde 404.
-No hay enlaces visibles a esa dirección. Código: `src/lib/panel.ts` y `redirects()` en `next.config.ts`.
 
 ## Plantilla para sitios de clientes
 

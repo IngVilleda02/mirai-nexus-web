@@ -20,11 +20,11 @@ export interface ClientSite {
 
 export const clientSites: ClientSite[] = [
   {
-    // CABA — primer cliente. Imagen local porque su dominio aún no está publicado; al publicarse se puede quitar `image`.
-    url: "https://cabamaquinados.com",
+    // CABA — primer cliente. Cambia la URL por la que asigne Vercel al publicar su sitio.
+    url: "https://caba-maquinados.vercel.app",
     industry: "Maquinados y fabricación industrial",
     title: "CABA Servicios y Maquinados Industriales",
-    description: "Sitio con servicios, portafolio en planta, solicitud de visita por WhatsApp y acceso a su panel de cotizaciones.",
+    description: "Sitio con servicios, portafolio de proyectos en planta y solicitud de visita por WhatsApp.",
     image: "/portfolio/clientes/caba.webp",
   },
   // { url: "https://www.cliente-ejemplo.com", industry: "Maquinados CNC" },

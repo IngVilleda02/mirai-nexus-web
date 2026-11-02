@@ -2,7 +2,6 @@ import "server-only";
 import nodemailer from "nodemailer";
 import type SMTPTransport from "nodemailer/lib/smtp-transport";
 import type { ContactPayload } from "./schema";
-import { PANEL_SLUG, panelUrl } from "@/lib/panel";
 
 /**
  * Adaptadores de entrega para las solicitudes de contacto.
@@ -36,14 +35,14 @@ function leadHtml(lead: Parameters<Provider>[0]) {
 }
 
 /**
- * Envía el lead por correo con un buzón de Hostinger (SMTP). Recomendado: todo queda dentro del plan.
- * SMTP_USER / SMTP_PASS = el buzón (ej. contacto@mirainexus.com); CONTACT_TO_EMAIL = quien recibe (oculto en la página).
+ * Envía el lead por correo por SMTP (Gmail con contraseña de aplicación, o cualquier buzón).
+ * SMTP_USER / SMTP_PASS = la cuenta que envía; CONTACT_TO_EMAIL = quien recibe (oculto en la página).
  */
 const smtp: Provider = async (lead) => {
   const user = process.env.SMTP_USER, pass = process.env.SMTP_PASS, to = process.env.CONTACT_TO_EMAIL || user;
   if (!user || !pass || !to) return { ok: false, reason: "not_configured" };
   const port = Number(process.env.SMTP_PORT || 465);
-  const options: SMTPTransport.Options = { host: process.env.SMTP_HOST || "smtp.hostinger.com", port, secure: port === 465, auth: { user, pass } };
+  const options: SMTPTransport.Options = { host: process.env.SMTP_HOST || "smtp.gmail.com", port, secure: port === 465, auth: { user, pass } };
   const info = await nodemailer.createTransport(options).sendMail({
     from: { name: "Sitio MIRAI NEXUS", address: user },
     to,
@@ -79,35 +78,14 @@ const resend: Provider = async (lead) => {
 
 const providers: Record<string, Provider> = { smtp, webhook, resend };
 
-/** Copia la solicitud a «Solicitudes» de MIRAI NEXUS en el panel de cotizaciones (si NEXT_PUBLIC_PANEL_URL existe). */
-const panel: Provider = async (lead) => {
-  const base = panelUrl();
-  if (!base) return { ok: false, reason: "not_configured" };
-  const site = (process.env.NEXT_PUBLIC_SITE_URL ?? "").replace(/\/+$/, "");
-  const res = await fetch(`${base}/api/public/solicitudes/${PANEL_SLUG}`, {
-    method: "POST",
-    headers: { "content-type": "application/json", origin: site },
-    body: JSON.stringify({ nombre: lead.name, empresa: lead.company, correo: lead.email, telefono: lead.phone ?? "", servicio: lead.serviceLabel, necesidad: lead.message }),
-    signal: AbortSignal.timeout(8000),
-  });
-  return res.ok ? { ok: true } : { ok: false, reason: "delivery_failed" };
-};
-
 const safe = async (p: Provider, lead: Parameters<Provider>[0]): Promise<DeliveryResult> => {
   try { return await p(lead); } catch { return { ok: false, reason: "delivery_failed" }; }
 };
 
-/**
- * Entrega la solicitud por el proveedor configurado (CONTACT_PROVIDER; si está vacío y hay buzón SMTP, usa SMTP)
- * y, además, la guarda en el panel. Se responde «recibida» solo si al menos uno de los dos la recibió de verdad.
- */
+/** Entrega la solicitud por el proveedor configurado (CONTACT_PROVIDER; si está vacío y hay buzón SMTP, usa SMTP). */
 export async function deliverLead(lead: Parameters<Provider>[0]): Promise<DeliveryResult> {
   const name = process.env.CONTACT_PROVIDER?.trim().toLowerCase() || (process.env.SMTP_USER ? "smtp" : "");
   const provider = name ? providers[name] : undefined;
-  const [main, copy] = await Promise.all([
-    provider ? safe(provider, lead) : Promise.resolve<DeliveryResult>({ ok: false, reason: "not_configured" }),
-    safe(panel, lead),
-  ]);
-  if (main.ok || copy.ok) return { ok: true };
-  return main.reason === "not_configured" && copy.reason === "not_configured" ? { ok: false, reason: "not_configured" } : { ok: false, reason: "delivery_failed" };
+  if (!provider) return { ok: false, reason: "not_configured" };
+  return safe(provider, lead);
 }
