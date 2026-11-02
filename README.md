@@ -53,7 +53,7 @@ Cuando tengas clientes suficientes, pon `showDemoProjects = false` para ocultar 
 ## Pendientes antes de publicar
 
 - [x] Logotipo oficial, WhatsApp e Instagram.
-- [ ] API key de Resend en `RESEND_API_KEY` (el correo que recibe ya está configurado y oculto).
+- [ ] Buzón de Hostinger (`SMTP_USER` / `SMTP_PASS`) para el formulario; el correo que recibe va en `CONTACT_TO_EMAIL` (oculto).
 - [ ] Dominio definitivo en `NEXT_PUBLIC_SITE_URL` (metadatos, sitemap y Open Graph).
 - [ ] Completar y revisar con un asesor legal el aviso de privacidad (`[razón social]`, `[domicilio]`, `[fecha]`, correo de contacto ARCO).
 - [ ] Confirmar los textos de las tarjetas de beneficios (`src/content/contact.ts`).
@@ -61,55 +61,24 @@ Cuando tengas clientes suficientes, pon `showDemoProjects = false` para ocultar 
 
 ## Formulario de contacto
 
-`POST /api/contact` valida, filtra spam (honeypot + límite por IP) y entrega al proveedor configurado.
+`POST /api/contact` valida, filtra spam (honeypot + límite por IP) y entrega la solicitud:
 
-- **webhook**: `CONTACT_PROVIDER=webhook`, `CONTACT_WEBHOOK_URL=https://…` (n8n, Make, Zapier, CRM).
-- **resend**: `CONTACT_PROVIDER=resend`, `RESEND_API_KEY`, `CONTACT_TO_EMAIL`, `CONTACT_FROM_EMAIL` (dominio verificado en Resend).
+- **Correo por SMTP (recomendado, Hostinger)**: `SMTP_USER`, `SMTP_PASS` (buzón de Hostinger, ej. `contacto@mirainexus.com`),
+  `CONTACT_TO_EMAIL` (quien recibe; nunca aparece en la página). `SMTP_HOST=smtp.hostinger.com`, `SMTP_PORT=465` por defecto.
+- **Panel de cotizaciones**: con `NEXT_PUBLIC_PANEL_URL`, cada solicitud también se guarda en *Solicitudes* de MIRAI NEXUS.
+- Alternativas: `CONTACT_PROVIDER=webhook` (`CONTACT_WEBHOOK_URL`) o `CONTACT_PROVIDER=resend`.
 
-Sin proveedor responde `503 not_configured` y el sitio avisa al visitante que su solicitud **no** se envió. Nunca se simula un envío exitoso.
+Se responde «recibida» solo si el correo o el panel la recibieron de verdad; si no hay ninguno, el sitio avisa que
+la solicitud **no** se envió. Nunca se simula un envío exitoso.
 
-### Probar el formulario con correo (Resend)
+## Publicación en Hostinger (app Node.js, plan Unlimited o Cloud)
 
-1. Crea una cuenta gratuita en resend.com y genera una API key (*API Keys → Create*).
-2. Crea `.env.local` en la raíz del proyecto:
-   ```bash
-   CONTACT_PROVIDER=resend
-   RESEND_API_KEY=re_xxxxxxxxx
-   CONTACT_TO_EMAIL=el-correo-con-el-que-te-registraste@gmail.com
-   CONTACT_FROM_EMAIL="MIRAI NEXUS <onboarding@resend.dev>"
-   ```
-   Sin dominio verificado, Resend solo entrega pruebas al correo de tu propia cuenta.
-3. `npm run dev`, abre http://localhost:3000/#contacto, llena el formulario y envía.
-4. Debe aparecer "Solicitud recibida." y llegarte el correo con los datos y "Responder a" apuntando al cliente.
-5. Al tener dominio (ej. mirainexus.com), verifícalo en Resend y cambia `CONTACT_FROM_EMAIL` a `contacto@mirainexus.com`.
+1. hPanel → Sitios web → Agregar → **App web de Node.js** → sube `mirai-nexus-app.zip` (o conecta GitHub). Dominio `mirainexus.com`, Next.js, Node 22.
+2. Variables (las `NEXT_PUBLIC_` se graban al compilar): `NEXT_PUBLIC_SITE_URL`, `NEXT_PUBLIC_WHATSAPP_NUMBER`, `NEXT_PUBLIC_PANEL_URL`,
+   `SMTP_USER`, `SMTP_PASS`, `CONTACT_TO_EMAIL`.
+3. Despliega y revisa: formulario, WhatsApp, `/admin`, `sitemap.xml` y la imagen al pegar el enlace en WhatsApp.
 
-Para Vercel, agrega esas mismas variables en *Settings → Environment Variables* y vuelve a desplegar.
-
-## Publicación en Vercel (plan gratuito Hobby)
-
-> El plan Hobby es gratuito pero Vercel lo limita a uso no comercial. Sirve para revisar y presentar; para operar el sitio de la empresa a largo plazo considera Pro o Cloudflare (ver `docs/ARQUITECTURA.md`).
-
-1. **GitHub**: crea un repositorio privado `mirai-nexus-web` vacío (sin README) y, dentro de la carpeta del proyecto:
-   ```bash
-   git remote add origin https://github.com/<tu-usuario>/mirai-nexus-web.git
-   git push -u origin main
-   ```
-2. **Vercel**: vercel.com → *Add New → Project* → importa `mirai-nexus-web`. Vercel detecta Next.js; no cambies nada de la compilación.
-3. **Variables de entorno** (*Settings → Environment Variables*, entorno *Production* y *Preview*):
-
-   | Variable | Valor |
-   | --- | --- |
-   | `NEXT_PUBLIC_SITE_URL` | `https://tu-dominio.com` (o la URL `.vercel.app` mientras no haya dominio) |
-   | `NEXT_PUBLIC_WHATSAPP_NUMBER` | `525660548768` |
-   | `CONTACT_PROVIDER` | `resend` |
-   | `CONTACT_TO_EMAIL` | el correo que recibe las solicitudes (oculto) |
-   | `CONTACT_FROM_EMAIL` | `MIRAI NEXUS <onboarding@resend.dev>` |
-   | `RESEND_API_KEY` | tu API key de Resend |
-
-4. **Deploy**. Cada `git push` a `main` vuelve a publicar solo; cada rama crea una vista previa.
-5. **Dominio con Cloudflare**: en Vercel → *Settings → Domains* agrega `tu-dominio.com` y `www`. En Cloudflare → DNS crea los registros que Vercel indique (A para el dominio, CNAME para `www`) con la nube **gris** (solo DNS). SSL/TLS en *Full (strict)*.
-6. Revisa: formulario (llega el correo), WhatsApp, `https://tu-dominio.com/sitemap.xml` y la imagen al pegar el enlace en WhatsApp.
-
+Guía completa de los tres sitios: `LEEME-GUIA-HOSTINGER.md` en la carpeta de despliegue.
 Antes de cada publicación puedes correr `npm run check` (tipos + lint + build).
 
 ## Acceso administrativo (/admin)
