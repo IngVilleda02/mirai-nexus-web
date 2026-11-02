@@ -1,4 +1,5 @@
 import type { NextConfig } from "next";
+import { panelAccessUrl } from "./src/lib/panel";
 
 /**
  * Cabeceras de seguridad aplicadas a todas las rutas.
@@ -33,6 +34,11 @@ const securityHeaders = [
 const nextConfig: NextConfig = {
   poweredByHeader: false,
   images: { formats: ["image/avif", "image/webp"] },
+  /** /admin → acceso al panel de cotizaciones con el estilo de MIRAI NEXUS. Sin NEXT_PUBLIC_PANEL_URL no existe (404). */
+  async redirects() {
+    const target = panelAccessUrl();
+    return target ? [{ source: "/admin", destination: target, permanent: false }, { source: "/admin/:path*", destination: target, permanent: false }] : [];
+  },
   async headers() {
     return [{ source: "/:path*", headers: securityHeaders }];
   },

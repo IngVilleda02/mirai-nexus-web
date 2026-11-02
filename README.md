@@ -112,6 +112,11 @@ Para Vercel, agrega esas mismas variables en *Settings → Environment Variables
 
 Antes de cada publicación puedes correr `npm run check` (tipos + lint + build).
 
+## Acceso administrativo (/admin)
+Con `NEXT_PUBLIC_PANEL_URL` (ej. `https://panel.mirainexus.com`), `mirainexus.com/admin` lleva al acceso del panel de
+cotizaciones con el estilo de MIRAI NEXUS (`/acceso/mirai-nexus`). Sin la variable, `/admin` responde 404.
+No hay enlaces visibles a esa dirección. Código: `src/lib/panel.ts` y `redirects()` en `next.config.ts`.
+
 ## Plantilla para sitios de clientes
 
 El prompt maestro y la ficha del cliente están en el documento **"Prompt maestro — Sitios web de clientes MIRAI NEXUS"** de tu cuenta de Claude (se exporta a Word, PDF o Markdown).
